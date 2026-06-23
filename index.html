@@ -971,9 +971,9 @@ function submitBooking(){
     heard_about:document.getElementById('b-source').value,
     notes:document.getElementById('b-notes').value
   };
-  // Send via Web3Forms — replace YOUR_WEB3FORMS_KEY below (free, unlimited at web3forms.com)
-  const WEB3FORMS_KEY='YOUR_WEB3FORMS_KEY';
-  if(WEB3FORMS_KEY!=='YOUR_WEB3FORMS_KEY'){
+  // Web3Forms — free, unlimited submissions
+  const WEB3FORMS_KEY='7223be0c-e223-4f83-bc5d-f7aa0fea1073';
+  {
     fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:WEB3FORMS_KEY,...payload})})
     .catch(()=>{});
   }
