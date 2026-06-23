@@ -198,6 +198,36 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 .wl-modal-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px}
 .wl-modal-camp{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--purple-glow);margin-bottom:24px;letter-spacing:1px}
 
+/* CALENDAR */
+.calendar-section{background:var(--black);padding:40px 24px 64px;border-top:1px solid #1a0040}
+.calendar-outer{max-width:1100px;margin:0 auto}
+.calendar-months{display:flex;flex-direction:column;gap:40px}
+.cal-month{background:var(--card);border:1px solid #1a0040;border-radius:4px;overflow:hidden}
+.cal-month-header{background:#0a0018;padding:16px 24px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--purple-light);border-bottom:1px solid #1a0040}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid #1a0040}
+.cal-dow{background:#080015;padding:10px 4px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-right:1px solid #1a0040;border-bottom:1px solid #1a0040}
+.cal-day{border-right:1px solid #1a0040;border-bottom:1px solid #1a0040;min-height:80px;padding:8px 6px;position:relative;vertical-align:top}
+.cal-day.empty{background:#050010}
+.cal-day.has-camp{background:#0a0018;cursor:default}
+.cal-day-num{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:6px;line-height:1}
+.cal-day.has-camp .cal-day-num{color:var(--white)}
+.cal-day.out-of-range{background:#030008;opacity:0.4}
+.cal-day.out-of-range .cal-day-num{color:#2a1a40}
+.cal-camp-pill{display:block;padding:4px 7px;border-radius:2px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;cursor:pointer;margin-bottom:4px;line-height:1.3;border:none;text-align:left;width:100%;transition:opacity .15s}
+.cal-camp-pill:hover{opacity:0.8}
+.cal-camp-pill.tw{background:var(--twsc)}
+.cal-camp-pill.lac{background:#1a5fa8}
+.cal-camp-pill.residential{background:#7a5c00}
+@media(max-width:640px){
+  .cal-day{min-height:56px;padding:5px 4px}
+  .cal-day-num{font-size:12px}
+  .cal-camp-pill{font-size:10px;padding:3px 5px}
+}
+@media(max-width:420px){
+  .cal-dow{font-size:9px;padding:8px 2px;letter-spacing:0}
+  .cal-camp-pill{font-size:9px}
+}
+
 /* FOOTER */
 footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px solid #1a0040}
 .footer-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
@@ -437,6 +467,8 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <button class="filter-btn active" onclick="filterAll(this)">All camps</button>
     <button class="filter-btn venue-tw" onclick="filterVenue('tw',this)">Tunbridge Wells Sports Centre</button>
     <button class="filter-btn venue-lac" onclick="filterVenue('lac',this)">London Aquatics Centre</button>
+    <div style="width:1px;height:20px;background:#2a0060;margin:0 4px;flex-shrink:0"></div>
+    <a href="#calendar" class="filter-btn" style="text-decoration:none;background:#5a00a0;border-color:#7b00cc;color:#fff">🗓 Summer camp calendar</a>
   </div>
 </div>
 
@@ -448,7 +480,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="coach-group">
       <div class="coach-group-header">Romane Temessek · France Artistic Swimming National Team · 4–7 August 2026</div>
 
-      <div class="camp-card venue-tw" data-coach="romane" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="romane" data-venue="tw" id="camp-precision">
         <div>
           <div class="camp-top"><span class="camp-date">Tue 4 Aug</span><span class="camp-theme">ICON Romane: PRECISION</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Master figures, sculling technique, and body positions with control, accuracy, and elite-level detail.</div>
@@ -470,7 +502,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-tw" data-coach="romane" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="romane" data-venue="tw" id="camp-perform">
         <div>
           <div class="camp-top"><span class="camp-date">Wed 5 Aug</span><span class="camp-theme">ICON Romane: PERFORM</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Learn, refine, and perform a complete routine in just one day — bringing artistry, timing, and confidence together.</div>
@@ -492,7 +524,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-lac" data-coach="romane" data-venue="lac">
+      <div class="camp-card venue-lac" data-coach="romane" data-venue="lac" id="camp-elevate">
         <div>
           <div class="camp-top"><span class="camp-date">Thu 6 Aug</span><span class="camp-theme">ICON Romane: ELEVATE</span><span class="venue-tag lac">London Aquatics Centre</span></div>
           <div class="camp-subheading">Develop height, power, and explosive thrusts &amp; boosts to rise higher, sharper, and stronger in the water.</div>
@@ -514,7 +546,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-lac" data-coach="romane" data-venue="lac">
+      <div class="camp-card venue-lac" data-coach="romane" data-venue="lac" id="camp-control">
         <div>
           <div class="camp-top"><span class="camp-date">Fri 7 Aug</span><span class="camp-theme">ICON Romane: CONTROL</span><span class="venue-tag lac">London Aquatics Centre</span></div>
           <div class="camp-subheading">Refine stability, accuracy, and body awareness for cleaner, consistent execution of figures and technical skills.</div>
@@ -541,7 +573,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="coach-group">
       <div class="coach-group-header">Olivia Federici · Ex GB Artistic Swimming National Team · 11–12 August 2026</div>
 
-      <div class="camp-card venue-tw" data-coach="olivia" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="olivia" data-venue="tw" id="camp-artistry">
         <div>
           <div class="camp-top"><span class="camp-date">Tue 11 Aug</span><span class="camp-theme">ICON Olivia: ARTISTRY</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Develop expression, creativity, and performance quality in every movement.</div>
@@ -563,7 +595,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-tw" data-coach="olivia" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="olivia" data-venue="tw" id="camp-expression">
         <div>
           <div class="camp-top"><span class="camp-date">Wed 12 Aug</span><span class="camp-theme">ICON Olivia: EXPRESSION</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Bring routines to life through emotion, interpretation, and connection to music.</div>
@@ -590,7 +622,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="coach-group">
       <div class="coach-group-header">Leilani Torres · International Artistic Swimming Consultant · 14–15 August 2026</div>
 
-      <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw" id="camp-power">
         <div>
           <div class="camp-top"><span class="camp-date">Thu 14 Aug</span><span class="camp-theme">ICON Leilani: POWER</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Build strength, stability, and explosive movement to enhance every element of your performance.</div>
@@ -612,7 +644,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw" id="camp-ascend">
         <div>
           <div class="camp-top"><span class="camp-date">Fri 15 Aug</span><span class="camp-theme">ICON Leilani: ASCEND</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Take your performance to the next level with high-level training and challenge.</div>
@@ -639,7 +671,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="coach-group">
       <div class="coach-group-header">Kseniya Sydorenko · Ukrainian Olympian, Tokyo 2020 · 18–20 August 2026</div>
 
-      <div class="camp-card venue-tw" data-coach="kseniya" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="kseniya" data-venue="tw" id="camp-intensity">
         <div>
           <div class="camp-top"><span class="camp-date">Tue 18 Aug</span><span class="camp-theme">ICON Kseniya: INTENSITY</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Train with focus, energy, and purpose to push beyond your limits.</div>
@@ -661,7 +693,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-lac" data-coach="kseniya" data-venue="lac">
+      <div class="camp-card venue-lac" data-coach="kseniya" data-venue="lac" id="camp-mastery">
         <div>
           <div class="camp-top"><span class="camp-date">Wed 19 Aug</span><span class="camp-theme">ICON Kseniya: MASTERY</span><span class="venue-tag lac">London Aquatics Centre</span></div>
           <div class="camp-subheading">Perfect the details that separate good athletes from elite performers.</div>
@@ -683,7 +715,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
       </div>
 
-      <div class="camp-card venue-tw" data-coach="kseniya" data-venue="tw">
+      <div class="camp-card venue-tw" data-coach="kseniya" data-venue="tw" id="camp-rise">
         <div>
           <div class="camp-top"><span class="camp-date">Thu 20 Aug</span><span class="camp-theme">ICON Kseniya: RISE</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Increase elevation, control your height, and command attention above the water.</div>
@@ -786,6 +818,23 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
   </div>
 </section>
 
+
+<!-- CALENDAR -->
+<section class="calendar-section" id="calendar">
+  <div class="calendar-outer">
+    <p class="section-label">Summer 2026</p>
+    <h2 class="section-title">Camp <span>Calendar</span></h2>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:32px">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:#7a5c00;display:inline-block;flex-shrink:0"></span>In Synch Residential Camp</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:var(--twsc);display:inline-block;flex-shrink:0"></span>ICON Series · Tunbridge Wells Sports Centre</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:var(--lac);display:inline-block;flex-shrink:0"></span>ICON Series · London Aquatics Centre</div>
+    </div>
+    <div class="calendar-months" id="calendarMount"></div>
+  </div>
+</section>
+
+
+
 <!-- INFO STRIP -->
 <div class="info-strip">
   <div class="info-strip-inner">
@@ -849,6 +898,147 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 // ─────────────────────────────────────────────────────────────────
+
+// ── CALENDAR ──
+(function(){
+  const CAMPS = [
+    // Residential camp 26 Jul – 1 Aug
+    {day:26, month:6, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    {day:27, month:6, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    {day:28, month:6, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    {day:29, month:6, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    {day:30, month:6, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    {day:31, month:6, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    {day:1,  month:7, label:'In Synch Residential Camp', venue:'residential', id:null, url:'https://www.insynchcamp.com'},
+    // ICON Series day camps
+    {day:4,  month:7, label:'ICON Romane: PRECISION',  venue:'tw', id:'camp-precision'},
+    {day:5,  month:7, label:'ICON Romane: PERFORM',    venue:'tw', id:'camp-perform'},
+    {day:6,  month:7, label:'ICON Romane: ELEVATE',    venue:'lac',id:'camp-elevate'},
+    {day:7,  month:7, label:'ICON Romane: CONTROL',    venue:'lac',id:'camp-control'},
+    {day:11, month:7, label:'ICON Olivia: ARTISTRY',   venue:'tw', id:'camp-artistry'},
+    {day:12, month:7, label:'ICON Olivia: EXPRESSION', venue:'tw', id:'camp-expression'},
+    {day:14, month:7, label:'ICON Leilani: POWER',     venue:'tw', id:'camp-power'},
+    {day:15, month:7, label:'ICON Leilani: ASCEND',    venue:'tw', id:'camp-ascend'},
+    {day:18, month:7, label:'ICON Kseniya: INTENSITY', venue:'tw', id:'camp-intensity'},
+    {day:19, month:7, label:'ICON Kseniya: MASTERY',   venue:'lac',id:'camp-mastery'},
+    {day:20, month:7, label:'ICON Kseniya: RISE',      venue:'tw', id:'camp-rise'},
+  ];
+  // month:7 = August (0-indexed)
+
+  const RANGE_START = new Date(2026,6,26); // 26 July
+  const RANGE_END   = new Date(2026,7,30); // 30 August
+  const MONTHS = [
+    {year:2026, month:6, name:'July 2026'},
+    {year:2026, month:7, name:'August 2026'},
+  ];
+  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  function campMap(){
+    const m={};
+    CAMPS.forEach(c=>{
+      const key=c.year+'-'+c.month+'-'+c.day;
+      // store by month+day
+      const k2=c.month+'-'+c.day;
+      if(!m[k2])m[k2]=[];
+      m[k2].push(c);
+    });
+    return m;
+  }
+
+  function scrollToCamp(id){
+    // Reset filters so camp is visible
+    activeCoach=null; activeVenue=null;
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn')[0].classList.add('active');
+    document.querySelectorAll('.coach-card').forEach(c=>c.classList.remove('active'));
+    applyFilters();
+    const el=document.getElementById(id);
+    if(el){
+      setTimeout(()=>{
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+        el.style.transition='box-shadow .3s';
+        el.style.boxShadow='0 0 0 2px var(--purple-glow)';
+        setTimeout(()=>el.style.boxShadow='',1800);
+      },100);
+    }
+  }
+
+  function buildCalendar(){
+    const mount=document.getElementById('calendarMount');
+    if(!mount)return;
+    const cm=campMap();
+
+    MONTHS.forEach(({year,month,name})=>{
+      const section=document.createElement('div');
+      section.className='cal-month';
+
+      const header=document.createElement('div');
+      header.className='cal-month-header';
+      header.textContent=name;
+      section.appendChild(header);
+
+      const grid=document.createElement('div');
+      grid.className='cal-grid';
+
+      // Day of week headers
+      DAYS.forEach(d=>{
+        const h=document.createElement('div');
+        h.className='cal-dow';
+        h.textContent=d;
+        grid.appendChild(h);
+      });
+
+      // First day to show — for July start at 26th, otherwise 1st
+      const startDay = (year===2026 && month===6) ? 26 : 1;
+      const firstDay=new Date(year,month,startDay).getDay();
+      const offset=(firstDay+6)%7; // Mon=0..Sun=6
+      const daysInMonth=new Date(year,month+1,0).getDate();
+      // End day — for August stop at 30th
+      const endDay = (year===2026 && month===7) ? 30 : daysInMonth;
+
+      for(let i=0;i<offset;i++){
+        const empty=document.createElement('div');
+        empty.className='cal-day empty';
+        grid.appendChild(empty);
+      }
+
+      for(let d=startDay;d<=endDay;d++){
+        const date=new Date(year,month,d);
+        const inRange=date>=RANGE_START&&date<=RANGE_END;
+        const cell=document.createElement('div');
+        const k=month+'-'+d;
+        const dayCamps=cm[k]||[];
+        cell.className='cal-day'+(dayCamps.length?' has-camp':'');
+
+        const num=document.createElement('div');
+        num.className='cal-day-num';
+        num.textContent=d;
+        cell.appendChild(num);
+
+        dayCamps.forEach(c=>{
+          const pill=document.createElement('button');
+          pill.className='cal-camp-pill '+c.venue;
+          // Shorten label for calendar
+          const short = c.venue==='residential' ? 'Residential Camp' : c.label.replace(/ICON \w+: /,'');
+          pill.innerHTML = c.venue==='residential'
+            ? 'In Synch Residential'
+            : '<span style="opacity:0.75;font-size:9px">'+c.label.split(':')[0]+'</span><br>'+short;
+          pill.onclick = c.url
+            ? ()=>window.open(c.url,'_blank')
+            : ()=>scrollToCamp(c.id);
+          cell.appendChild(pill);
+        });
+
+        grid.appendChild(cell);
+      }
+
+      section.appendChild(grid);
+      mount.appendChild(section);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',buildCalendar);
+})();
 
 // Stars
 const starsEl=document.getElementById('heroStars');
