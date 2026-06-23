@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Synch ICON Series – Summer 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#000000;
+  --deep:#0a0010;
+  --card:#0f0020;
+  --purple:#8B00FF;
+  --purple-mid:#6600CC;
+  --purple-glow:#AA44FF;
+  --purple-light:#C084FC;
+  --silver:#C0C0C0;
+  --silver-light:#E8E8E8;
+  --white:#FFFFFF;
+  --muted:#9980BB;
+  --twsc:#2D8B6B;
+  --lac:#1a5fa8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* HERO */
+.hero{position:relative;background:var(--deep);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 30%,rgba(139,0,255,0.35) 0%,transparent 70%);pointer-events:none}
+.hero-stars{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;background:#fff;border-radius:50%}
+.hero-logo{width:min(420px,75vw);height:auto;display:block;margin:0 auto 32px;position:relative;z-index:2;image-rendering:auto}
+.hero-tagline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(13px,2.5vw,17px);font-weight:600;letter-spacing:4px;color:var(--purple-light);text-transform:uppercase;margin-bottom:20px;position:relative;z-index:2}
+.hero-headline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(34px,6.5vw,68px);font-weight:900;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;position:relative;z-index:2}
+.hero-headline span{color:var(--purple-glow)}
+.hero-sub{font-size:clamp(14px,2vw,17px);color:var(--muted);max-width:540px;margin:0 auto 40px;position:relative;z-index:2}
+.hero-cta{display:inline-block;background:var(--purple);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:16px 48px;border-radius:4px;text-decoration:none;position:relative;z-index:2;border:1px solid var(--purple-glow);transition:background .2s}
+.hero-cta:hover{background:var(--purple-mid)}
+.hero-badges{display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap;position:relative;z-index:2}
+.badge{text-align:center}
+.badge-num{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;color:var(--purple-glow);line-height:1}
+.badge-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+
+/* SECTION HEADERS */
+.section-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--purple-light);text-align:center;margin-bottom:10px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5vw,50px);font-weight:900;text-align:center;text-transform:uppercase;color:var(--white);margin-bottom:48px}
+.section-title span{color:var(--purple-glow)}
+
+/* COACHES */
+.coaches{background:#050010;padding:72px 24px 80px}
+.coaches-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:3px;max-width:1100px;margin:0 auto}
+.coach-card{background:var(--card);padding:0;border-top:3px solid var(--purple);position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.coach-card.active,.coach-card:hover{border-top-color:var(--purple-glow)}
+.coach-card.active{background:#150030}
+.coach-photo{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:top center;display:block;background:#0a0020}
+.coach-photo-placeholder{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#0d0025 0%,#1a0040 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+.coach-initial-large{font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;color:var(--purple-glow);line-height:1;opacity:0.6}
+.coach-photo-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.coach-info{padding:24px 24px 28px}
+.coach-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px;letter-spacing:1px}
+.coach-title{font-size:12px;color:var(--purple-light);line-height:1.5;margin-bottom:12px}
+.coach-camps-count{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.coach-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--purple-glow),transparent)}
+
+/* FILTER BAR */
+.filter-bar{background:#0a0010;padding:20px 24px;border-top:1px solid #1a0040;border-bottom:1px solid #1a0040;position:sticky;top:0;z-index:100}
+.filter-inner{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.filter-btn{background:transparent;border:1px solid #2a0060;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border-radius:2px;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.filter-btn.venue-tw.active{background:var(--twsc);border-color:var(--twsc)}
+.filter-btn.venue-lac.active{background:var(--lac);border-color:var(--lac)}
+
+/* CAMPS */
+.camps{padding:64px 24px 80px;background:var(--black)}
+.camps-inner{max-width:1100px;margin:0 auto}
+.coach-group{margin-bottom:56px}
+.coach-group-header{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--purple-light);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #1a0040}
+.camp-card{background:var(--card);border:1px solid #1a0040;border-left:4px solid var(--purple);margin-bottom:14px;padding:24px 28px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;transition:border-color .2s,background .2s}
+.camp-card:hover{border-left-color:var(--purple-glow);background:#120025}
+.camp-card.hidden{display:none}
+.camp-card.venue-tw{border-left-color:var(--twsc)}
+.camp-card.venue-tw:hover{border-left-color:#3db88a}
+.camp-card.venue-lac{border-left-color:var(--lac)}
+.camp-card.venue-lac:hover{border-left-color:#2980d4}
+.camp-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.camp-date{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--white);letter-spacing:1px}
+.camp-theme{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--purple-glow);letter-spacing:2px}
+.venue-tag{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:2px;white-space:nowrap}
+.venue-tag.tw{background:rgba(45,139,107,0.15);color:#3db88a;border:1px solid rgba(45,139,107,0.35)}
+.venue-tag.lac{background:rgba(26,95,168,0.15);color:#4da3e8;border:1px solid rgba(26,95,168,0.35)}
+.camp-subheading{font-size:14px;color:var(--silver-light);margin-bottom:14px;font-style:italic;line-height:1.5}
+.camp-meta{display:flex;gap:20px;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.meta-item strong{color:var(--silver)}
+.camp-coach-row{margin-top:14px;padding-top:14px;border-top:1px solid #1a0040;display:flex;align-items:center;gap:10px}
+.coach-pip{width:32px;height:32px;border-radius:50%;background:var(--purple-mid);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden}
+.coach-pip img{width:100%;height:100%;object-fit:cover;object-position:top}
+.camp-coach-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);letter-spacing:0.5px}
+.camp-coach-title{font-size:11px;color:var(--purple-light)}
+.camp-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:150px}
+.price{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--white);text-align:right;line-height:1}
+.price-sub{font-size:10px;color:var(--muted);text-align:right;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.btn-book{display:block;background:var(--purple);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:11px 22px;border-radius:3px;text-align:center;text-decoration:none;border:none;cursor:pointer;transition:background .2s;white-space:nowrap}
+.btn-book:hover{background:var(--purple-mid)}
+.btn-waitlist{display:block;background:transparent;color:var(--purple-light);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:3px;text-align:center;text-decoration:none;border:1px solid #2a0060;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-waitlist:hover{border-color:var(--purple-light);color:#fff}
+
+/* VENUES SECTION */
+.venues{background:#050010;padding:72px 24px 80px}
+.venues-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:3px;max-width:1100px;margin:0 auto}
+@media(max-width:560px){.venues-grid{grid-template-columns:1fr}}
+.venue-card{background:var(--card);overflow:hidden}
+.venue-photos{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.venue-photo-main{grid-column:1/-1;height:220px;overflow:hidden;position:relative}
+.venue-photo-main img{width:100%;height:100%;object-fit:cover;display:block}
+.venue-photo-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#0d0025,#1a0040);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.venue-badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px}
+.venue-badge.tw{background:var(--twsc);color:#fff}
+.venue-badge.lac{background:var(--lac);color:#fff}
+.venue-details{padding:28px}
+.venue-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px;letter-spacing:1px}
+.venue-address{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.venue-address a{color:var(--purple-light);text-decoration:none}
+.venue-address a:hover{color:#fff}
+.venue-features{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.venue-feature{border-left:2px solid var(--purple);padding-left:12px}
+.venue-feature-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple-light);margin-bottom:4px}
+.venue-feature-text{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* INFO STRIP */
+.info-strip{background:#0a0010;border-top:1px solid #1a0040;border-bottom:1px solid #1a0040;padding:40px 24px}
+.info-strip-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px}
+.info-block{border-left:3px solid var(--purple);padding-left:18px}
+.info-block-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple-light);margin-bottom:6px}
+.info-block-text{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:999;align-items:center;justify-content:center;padding:24px}
+.modal-bg.open{display:flex}
+.modal{background:#0f0020;border:1px solid var(--purple);border-top:4px solid var(--purple-glow);padding:40px;max-width:480px;width:100%;border-radius:4px;position:relative}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1}
+.modal-close:hover{color:#fff}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.modal-camp{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--purple-glow);margin-bottom:24px;letter-spacing:1px}
+.modal-field{margin-bottom:16px}
+.modal-field label{display:block;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--purple-light);margin-bottom:6px}
+.modal-field input{width:100%;background:#0a0018;border:1px solid #2a0060;color:#fff;font-family:'Barlow',sans-serif;font-size:15px;padding:12px 16px;border-radius:3px;outline:none;transition:border-color .2s}
+.modal-field input:focus{border-color:var(--purple-glow)}
+.modal-submit{width:100%;background:var(--purple);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:14px;border:none;border-radius:3px;cursor:pointer;margin-top:8px;transition:background .2s}
+.modal-submit:hover{background:var(--purple-mid)}
+.modal-success{display:none;text-align:center;padding:24px 0}
+.modal-success-icon{font-size:44px;margin-bottom:14px}
+.modal-success-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;color:var(--purple-glow);margin-bottom:8px}
+.modal-success-text{color:var(--muted);font-size:14px}
+
+/* FOOTER */
+footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px solid #1a0040}
+.footer-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.footer-links a{color:var(--purple-light);text-decoration:none;font-size:14px}
+.footer-links a:hover{color:#fff}
+.footer-divider{width:60px;height:1px;background:var(--purple);margin:0 auto 20px}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#2a1a40;margin-top:8px}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .camp-card{grid-template-columns:1fr}
+  .camp-actions{flex-direction:row;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .venue-features{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .hero-badges{gap:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- WAITLIST MODAL -->
+<div class="modal-bg" id="waitlistModal" role="dialog" aria-modal="true" aria-label="Join waitlist">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+    <div id="modalForm">
+      <div class="modal-title">Join the waitlist</div>
+      <div class="modal-camp" id="modalCampName"></div>
+      <div class="modal-field"><label for="wl-name">Your full name</label><input type="text" id="wl-name" placeholder="Your name" autocomplete="name"></div>
+      <div class="modal-field"><label for="wl-email">Email address</label><input type="email" id="wl-email" placeholder="your@email.com" autocomplete="email"></div>
+      <div class="modal-field"><label for="wl-phone">Phone number</label><input type="tel" id="wl-phone" placeholder="+44 ..." autocomplete="tel"></div>
+      <div class="modal-field"><label for="wl-athlete">Athlete's name</label><input type="text" id="wl-athlete" placeholder="Who is attending?"></div>
+      <button class="modal-submit" onclick="submitWaitlist()">Add me to the waitlist</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <div class="modal-success-icon">⭐</div>
+      <div class="modal-success-title">You're on the list!</div>
+      <div class="modal-success-text">We'll be in touch as soon as a place opens up for<br><strong id="successCamp" style="color:var(--purple-glow)"></strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-stars" id="heroStars"></div>
+  <img src="logo.png" alt="In Synch ICON Series Summer 2026" class="hero-logo" onerror="this.style.display='none';document.getElementById('heroLogoFallback').style.display='block'">
+  <div id="heroLogoFallback" style="display:none;font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,6vw,56px);font-weight:900;letter-spacing:4px;text-transform:uppercase;color:#fff;margin-bottom:32px;position:relative;z-index:2">IN SYNCH <span style="color:var(--purple-glow)">ICON Series</span><div style="font-size:clamp(14px,2.5vw,20px);letter-spacing:6px;color:var(--purple-light);margin-top:8px">Summer 2026</div></div>
+  <p class="hero-tagline">★ Train with an ICON. Become an ICON. ★</p>
+  <h1 class="hero-headline">11 days.<br><span>4 elite coaches.</span><br>One summer.</h1>
+  <p class="hero-sub">Elite-level artistic swimming day camps across August 2026. Small groups. World-class coaching. Unforgettable experience.</p>
+  <a href="#camps" class="hero-cta">View all camps</a>
+  <div class="hero-badges">
+    <div class="badge"><div class="badge-num">11</div><div class="badge-label">Camp days</div></div>
+    <div class="badge"><div class="badge-num">4</div><div class="badge-label">ICON coaches</div></div>
+    <div class="badge"><div class="badge-num">20</div><div class="badge-label">Max per day</div></div>
+    <div class="badge"><div class="badge-num">2</div><div class="badge-label">Venues</div></div>
+  </div>
+</section>
+
+<!-- COACHES -->
+<section class="coaches" id="coaches">
+  <p class="section-label">Your coaches</p>
+  <h2 class="section-title">Meet the <span>ICONs</span></h2>
+  <div class="coaches-grid">
+
+    <div class="coach-card" onclick="filterCoach('romane')" id="coach-romane">
+      <div class="coach-photo-placeholder">
+        <div class="coach-initial-large">RT</div>
+        <div class="coach-photo-label">Add photo: romane.jpg</div>
+      </div>
+      <!-- To add photo: replace the div above with: <img src="romane.jpg" alt="Romane Temessek" class="coach-photo"> -->
+      <div class="coach-info">
+        <div class="coach-name">Romane Temessek</div>
+        <div class="coach-title">France Artistic Swimming National Team</div>
+        <div class="coach-camps-count">4 camps · 4–7 Aug · tap to filter</div>
+      </div>
+    </div>
+
+    <div class="coach-card" onclick="filterCoach('olivia')" id="coach-olivia">
+      <div class="coach-photo-placeholder">
+        <div class="coach-initial-large">OF</div>
+        <div class="coach-photo-label">Add photo: olivia.jpg</div>
+      </div>
+      <div class="coach-info">
+        <div class="coach-name">Olivia Federici</div>
+        <div class="coach-title">Ex GB Artistic Swimming National Team</div>
+        <div class="coach-camps-count">2 camps · 11–12 Aug · tap to filter</div>
+      </div>
+    </div>
+
+    <div class="coach-card" onclick="filterCoach('leilani')" id="coach-leilani">
+      <div class="coach-photo-placeholder">
+        <div class="coach-initial-large">LT</div>
+        <div class="coach-photo-label">Add photo: leilani.jpg</div>
+      </div>
+      <div class="coach-info">
+        <div class="coach-name">Leilani Torres</div>
+        <div class="coach-title">International Artistic Swimming Consultant &amp; World Aquatics Coaches Committee Member</div>
+        <div class="coach-camps-count">2 camps · 14–15 Aug · tap to filter</div>
+      </div>
+    </div>
+
+    <div class="coach-card" onclick="filterCoach('kseniya')" id="coach-kseniya">
+      <div class="coach-photo-placeholder">
+        <div class="coach-initial-large">KS</div>
+        <div class="coach-photo-label">Add photo: kseniya.jpg</div>
+      </div>
+      <div class="coach-info">
+        <div class="coach-name">Kseniya Sydorenko</div>
+        <div class="coach-title">Ukrainian Olympian · Tokyo 2020</div>
+        <div class="coach-camps-count">3 camps · 18–20 Aug · tap to filter</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-inner">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filterAll(this)">All camps</button>
+    <button class="filter-btn venue-tw" onclick="filterVenue('tw',this)">Tunbridge Wells Sports Centre</button>
+    <button class="filter-btn venue-lac" onclick="filterVenue('lac',this)">London Aquatics Centre</button>
+  </div>
+</div>
+
+<!-- CAMPS -->
+<section class="camps" id="camps">
+  <div class="camps-inner">
+
+    <!-- ROMANE -->
+    <div class="coach-group">
+      <div class="coach-group-header">Romane Temessek · France Artistic Swimming National Team · 4–7 August 2026</div>
+
+      <div class="camp-card venue-tw" data-coach="romane" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Tue 4 Aug</span><span class="camp-theme">PRECISION</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Master figures, sculling technique, and body positions with control, accuracy, and elite-level detail.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip" id="pip-romane-1"><img src="romane.jpg" alt="Romane" onerror="this.parentElement.textContent='RT'"></div>
+            <div><div class="camp-coach-name">Romane Temessek</div><div class="camp-coach-title">France Artistic Swimming National Team + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_PRECISION" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Romane · PRECISION · Tue 4 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-tw" data-coach="romane" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Wed 5 Aug</span><span class="camp-theme">PERFORM</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Learn, refine, and perform a complete routine in just one day — bringing artistry, timing, and confidence together.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="romane.jpg" alt="Romane" onerror="this.parentElement.textContent='RT'"></div>
+            <div><div class="camp-coach-name">Romane Temessek</div><div class="camp-coach-title">France Artistic Swimming National Team + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_PERFORM" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Romane · PERFORM · Wed 5 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-lac" data-coach="romane" data-venue="lac">
+        <div>
+          <div class="camp-top"><span class="camp-date">Thu 6 Aug</span><span class="camp-theme">ELEVATE</span><span class="venue-tag lac">London Aquatics Centre</span></div>
+          <div class="camp-subheading">Develop height, power, and explosive thrusts &amp; boosts to rise higher, sharper, and stronger in the water.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 1:30pm</strong></span>
+            <span class="meta-item">🏊 <strong>2.5h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="romane.jpg" alt="Romane" onerror="this.parentElement.textContent='RT'"></div>
+            <div><div class="camp-coach-name">Romane Temessek</div><div class="camp-coach-title">France Artistic Swimming National Team + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£35</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_ELEVATE" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Romane · ELEVATE · Thu 6 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-lac" data-coach="romane" data-venue="lac">
+        <div>
+          <div class="camp-top"><span class="camp-date">Fri 7 Aug</span><span class="camp-theme">CONTROL</span><span class="venue-tag lac">London Aquatics Centre</span></div>
+          <div class="camp-subheading">Refine stability, accuracy, and body awareness for cleaner, consistent execution of figures and technical skills.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>11:00am – 2:30pm</strong></span>
+            <span class="meta-item">🏊 <strong>2.5h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="romane.jpg" alt="Romane" onerror="this.parentElement.textContent='RT'"></div>
+            <div><div class="camp-coach-name">Romane Temessek</div><div class="camp-coach-title">France Artistic Swimming National Team + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£35</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_CONTROL" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Romane · CONTROL · Fri 7 Aug')">Join waitlist</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OLIVIA -->
+    <div class="coach-group">
+      <div class="coach-group-header">Olivia Federici · Ex GB Artistic Swimming National Team · 11–12 August 2026</div>
+
+      <div class="camp-card venue-tw" data-coach="olivia" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Tue 11 Aug</span><span class="camp-theme">ARTISTRY</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Develop expression, creativity, and performance quality in every movement.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>2h pool</strong> + 2h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="olivia.jpg" alt="Olivia" onerror="this.parentElement.textContent='OF'"></div>
+            <div><div class="camp-coach-name">Olivia Federici</div><div class="camp-coach-title">Ex GB Artistic Swimming National Team + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_ARTISTRY" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Olivia · ARTISTRY · Tue 11 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-tw" data-coach="olivia" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Wed 12 Aug</span><span class="camp-theme">EXPRESSION</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Bring routines to life through emotion, interpretation, and connection to music.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>2h pool</strong> + 2h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="olivia.jpg" alt="Olivia" onerror="this.parentElement.textContent='OF'"></div>
+            <div><div class="camp-coach-name">Olivia Federici</div><div class="camp-coach-title">Ex GB Artistic Swimming National Team + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_EXPRESSION" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Olivia · EXPRESSION · Wed 12 Aug')">Join waitlist</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEILANI -->
+    <div class="coach-group">
+      <div class="coach-group-header">Leilani Torres · International Artistic Swimming Consultant · 14–15 August 2026</div>
+
+      <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Thu 14 Aug</span><span class="camp-theme">POWER</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Build strength, stability, and explosive movement to enhance every element of your performance.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="leilani.jpg" alt="Leilani" onerror="this.parentElement.textContent='LT'"></div>
+            <div><div class="camp-coach-name">Leilani Torres</div><div class="camp-coach-title">International Consultant · World Aquatics Coaches Committee + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_POWER" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Leilani · POWER · Thu 14 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Fri 15 Aug</span><span class="camp-theme">ASCEND</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Take your performance to the next level with high-level training and challenge.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="leilani.jpg" alt="Leilani" onerror="this.parentElement.textContent='LT'"></div>
+            <div><div class="camp-coach-name">Leilani Torres</div><div class="camp-coach-title">International Consultant · World Aquatics Coaches Committee + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_ASCEND" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Leilani · ASCEND · Fri 15 Aug')">Join waitlist</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KSENIYA -->
+    <div class="coach-group">
+      <div class="coach-group-header">Kseniya Sydorenko · Ukrainian Olympian, Tokyo 2020 · 18–20 August 2026</div>
+
+      <div class="camp-card venue-tw" data-coach="kseniya" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Tue 18 Aug</span><span class="camp-theme">INTENSITY</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Train with focus, energy, and purpose to push beyond your limits.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="kseniya.jpg" alt="Kseniya" onerror="this.parentElement.textContent='KS'"></div>
+            <div><div class="camp-coach-name">Kseniya Sydorenko</div><div class="camp-coach-title">Ukrainian Olympian · Tokyo 2020 + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_INTENSITY" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Kseniya · INTENSITY · Tue 18 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-lac" data-coach="kseniya" data-venue="lac">
+        <div>
+          <div class="camp-top"><span class="camp-date">Wed 19 Aug</span><span class="camp-theme">MASTERY</span><span class="venue-tag lac">London Aquatics Centre</span></div>
+          <div class="camp-subheading">Perfect the details that separate good athletes from elite performers.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="kseniya.jpg" alt="Kseniya" onerror="this.parentElement.textContent='KS'"></div>
+            <div><div class="camp-coach-name">Kseniya Sydorenko</div><div class="camp-coach-title">Ukrainian Olympian · Tokyo 2020 + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_MASTERY" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Kseniya · MASTERY · Wed 19 Aug')">Join waitlist</button>
+        </div>
+      </div>
+
+      <div class="camp-card venue-tw" data-coach="kseniya" data-venue="tw">
+        <div>
+          <div class="camp-top"><span class="camp-date">Thu 20 Aug</span><span class="camp-theme">RISE</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-subheading">Increase elevation, control your height, and command attention above the water.</div>
+          <div class="camp-meta">
+            <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
+            <span class="meta-item">🏊 <strong>3h pool</strong> + 1h land</span>
+            <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
+            <span class="meta-item">👥 <strong>Max 20 places</strong></span>
+          </div>
+          <div class="camp-coach-row">
+            <div class="coach-pip"><img src="kseniya.jpg" alt="Kseniya" onerror="this.parentElement.textContent='KS'"></div>
+            <div><div class="camp-coach-name">Kseniya Sydorenko</div><div class="camp-coach-title">Ukrainian Olympian · Tokyo 2020 + 2 assistant coaches</div></div>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <div><div class="price">£50</div><div class="price-sub">per athlete</div></div>
+          <a href="BOOKING_LINK_RISE" class="btn-book" target="_blank">Book now</a>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Kseniya · RISE · Thu 20 Aug')">Join waitlist</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VENUES -->
+<section class="venues" id="venues">
+  <p class="section-label">Where we train</p>
+  <h2 class="section-title">The <span>Venues</span></h2>
+  <div class="venues-grid">
+
+    <div class="venue-card">
+      <div class="venue-photos">
+        <div class="venue-photo-main" style="position:relative">
+          <img src="twsc.jpg" alt="Tunbridge Wells Sports Centre" onerror="this.parentElement.innerHTML='<div class=\'venue-photo-placeholder\'>Add photo: twsc.jpg</div>'">
+          <span class="venue-badge tw">Tunbridge Wells</span>
+        </div>
+      </div>
+      <div class="venue-details">
+        <div class="venue-name">Tunbridge Wells Sports Centre</div>
+        <div class="venue-address">
+          St John's Road, Royal Tunbridge Wells, TN4 9TX<br>
+          <a href="https://maps.google.com/?q=Tunbridge+Wells+Sports+Centre+TN4+9TX" target="_blank">Get directions ↗</a>
+        </div>
+        <div class="venue-features">
+          <div class="venue-feature">
+            <div class="venue-feature-title">Pool</div>
+            <div class="venue-feature-text">25m competition pool, depth suitable for artistic swimming, with spectator seating. Dedicated lane space for ICON Series sessions.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Land space</div>
+            <div class="venue-feature-text">Spacious sports hall for warm-up, land drills, and conditioning. Sprung floor and full equipment access throughout the day.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Getting there</div>
+            <div class="venue-feature-text">5 mins from Tunbridge Wells train station. Car parking on site. Easy access from the A26.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Facilities</div>
+            <div class="venue-feature-text">Changing rooms, showers, lockers, and a café on site for athletes and spectators.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="venue-card">
+      <div class="venue-photos">
+        <div class="venue-photo-main" style="position:relative">
+          <img src="lac.jpg" alt="London Aquatics Centre" onerror="this.parentElement.innerHTML='<div class=\'venue-photo-placeholder\'>Add photo: lac.jpg</div>'">
+          <span class="venue-badge lac">London</span>
+        </div>
+      </div>
+      <div class="venue-details">
+        <div class="venue-name">London Aquatics Centre</div>
+        <div class="venue-address">
+          Queen Elizabeth Olympic Park, Stratford, London E20 2ZQ<br>
+          <a href="https://maps.google.com/?q=London+Aquatics+Centre+E20+2ZQ" target="_blank">Get directions ↗</a>
+        </div>
+        <div class="venue-features">
+          <div class="venue-feature">
+            <div class="venue-feature-title">Pool</div>
+            <div class="venue-feature-text">The iconic 50m Olympic pool, designed by Zaha Hadid for the 2012 London Olympics. An extraordinary setting to train and perform in.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Land space</div>
+            <div class="venue-feature-text">Purpose-built warm-up and conditioning areas within the Olympic Park complex, used by elite athletes year-round.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Getting there</div>
+            <div class="venue-feature-text">Stratford station (Elizabeth line, Jubilee, Overground, DLR) — 10 mins walk. Bus stops directly outside. Limited parking on site.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Facilities</div>
+            <div class="venue-feature-text">Full Olympic-standard changing facilities, lockers, café, and the incredible atmosphere of Queen Elizabeth Olympic Park.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-block">
+      <div class="info-block-title">Who can attend</div>
+      <div class="info-block-text">Ages 10–18. Minimum 2 years artistic swimming experience required for all camps.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-block-title">Group sizes</div>
+      <div class="info-block-text">Maximum 20 athletes per day. 1 lead ICON coach plus 2 assistant coaches at every session.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-block-title">ICON Badges</div>
+      <div class="info-block-text">Every athlete who attends earns an official ICON Badge. Collect them and climb the In Synch 2026 Leaderboard.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-block-title">Questions?</div>
+      <div class="info-block-text">Email us at <a href="mailto:insynch.camp@gmail.com" style="color:var(--purple-light);text-decoration:none">insynch.camp@gmail.com</a> and we'll get back to you.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="https://www.insynchcamp.com" target="_blank">www.insynchcamp.com</a>
+    <a href="mailto:insynch.camp@gmail.com">insynch.camp@gmail.com</a>
+    <a href="https://www.insynchcamp.com/leaderboard" target="_blank">View the leaderboard</a>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-logo">★ In Synch ICON Series · Summer 2026 ★</div>
+</footer>
+
+<script>
+// Stars
+const starsEl=document.getElementById('heroStars');
+for(let i=0;i<70;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.6+0.1}`;
+  starsEl.appendChild(s);
+}
+
+// Filter
+let activeCoach=null,activeVenue=null;
+function filterCoach(coach){
+  activeCoach=activeCoach===coach?null:coach;
+  activeVenue=null;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn')[0].classList.add('active');
+  document.querySelectorAll('.coach-card').forEach(c=>c.classList.remove('active'));
+  if(activeCoach)document.getElementById('coach-'+activeCoach).classList.add('active');
+  applyFilters();
+  document.getElementById('camps').scrollIntoView({behavior:'smooth'});
+}
+function filterAll(btn){
+  activeCoach=null;activeVenue=null;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.coach-card').forEach(c=>c.classList.remove('active'));
+  applyFilters();
+}
+function filterVenue(venue,btn){
+  activeVenue=activeVenue===venue?null:venue;
+  activeCoach=null;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.coach-card').forEach(c=>c.classList.remove('active'));
+  if(activeVenue)btn.classList.add('active');
+  else document.querySelectorAll('.filter-btn')[0].classList.add('active');
+  applyFilters();
+}
+function applyFilters(){
+  document.querySelectorAll('.camp-card').forEach(card=>{
+    const coachOk=!activeCoach||card.dataset.coach===activeCoach;
+    const venueOk=!activeVenue||card.dataset.venue===activeVenue;
+    card.classList.toggle('hidden',!(coachOk&&venueOk));
+  });
+  // Show/hide coach groups
+  document.querySelectorAll('.coach-group').forEach(group=>{
+    const visible=group.querySelectorAll('.camp-card:not(.hidden)').length>0;
+    group.style.display=visible?'':'none';
+  });
+}
+
+// Waitlist modal
+function openWaitlist(campName){
+  document.getElementById('modalCampName').textContent=campName;
+  document.getElementById('modalForm').style.display='';
+  document.getElementById('modalSuccess').style.display='none';
+  document.getElementById('wl-name').value='';
+  document.getElementById('wl-email').value='';
+  document.getElementById('wl-phone').value='';
+  document.getElementById('wl-athlete').value='';
+  document.getElementById('waitlistModal').classList.add('open');
+}
+function closeModal(){document.getElementById('waitlistModal').classList.remove('open');}
+function submitWaitlist(){
+  const name=document.getElementById('wl-name').value.trim();
+  const email=document.getElementById('wl-email').value.trim();
+  if(!name||!email){alert('Please enter your name and email address.');return;}
+  document.getElementById('successCamp').textContent=document.getElementById('modalCampName').textContent;
+  document.getElementById('modalForm').style.display='none';
+  document.getElementById('modalSuccess').style.display='block';
+}
+document.getElementById('waitlistModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html>
