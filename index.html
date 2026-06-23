@@ -240,11 +240,8 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
   <div class="coaches-grid">
 
     <div class="coach-card" onclick="filterCoach('romane')" id="coach-romane">
-      <div class="coach-photo-placeholder">
-        <div class="coach-initial-large">RT</div>
-        <div class="coach-photo-label">Add photo: romane.jpg</div>
-      </div>
-      <!-- To add photo: replace the div above with: <img src="romane.jpg" alt="Romane Temessek" class="coach-photo"> -->
+      <img src="romane.jpg" alt="Romane Temessek" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">RT</div></div>
       <div class="coach-info">
         <div class="coach-name">Romane Temessek</div>
         <div class="coach-title">France Artistic Swimming National Team</div>
@@ -254,10 +251,8 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     </div>
 
     <div class="coach-card" onclick="filterCoach('olivia')" id="coach-olivia">
-      <div class="coach-photo-placeholder">
-        <div class="coach-initial-large">OF</div>
-        <div class="coach-photo-label">Add photo: olivia.jpg</div>
-      </div>
+      <img src="olivia.jpg" alt="Olivia Federici" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">OF</div></div>
       <div class="coach-info">
         <div class="coach-name">Olivia Federici</div>
         <div class="coach-title">Ex GB Artistic Swimming National Team</div>
@@ -267,10 +262,8 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     </div>
 
     <div class="coach-card" onclick="filterCoach('leilani')" id="coach-leilani">
-      <div class="coach-photo-placeholder">
-        <div class="coach-initial-large">LT</div>
-        <div class="coach-photo-label">Add photo: leilani.jpg</div>
-      </div>
+      <img src="leilani.jpg" alt="Leilani Torres" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">LT</div></div>
       <div class="coach-info">
         <div class="coach-name">Leilani Torres</div>
         <div class="coach-title">International Artistic Swimming Consultant &amp; World Aquatics Coaches Committee Member</div>
@@ -280,10 +273,8 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     </div>
 
     <div class="coach-card" onclick="filterCoach('kseniya')" id="coach-kseniya">
-      <div class="coach-photo-placeholder">
-        <div class="coach-initial-large">KS</div>
-        <div class="coach-photo-label">Add photo: kseniya.jpg</div>
-      </div>
+      <img src="kseniya.jpg" alt="Kseniya Sydorenko" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">KS</div></div>
       <div class="coach-info">
         <div class="coach-name">Kseniya Sydorenko</div>
         <div class="coach-title">Ukrainian Olympian · Tokyo 2020</div>
@@ -678,7 +669,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
   <div class="footer-links">
     <a href="https://www.insynchcamp.com" target="_blank">www.insynchcamp.com</a>
     <a href="mailto:insynch.camp@gmail.com">insynch.camp@gmail.com</a>
-    <a href="https://www.insynchcamp.com/leaderboard" target="_blank">View the leaderboard</a>
+    <a href="https://leaderboard.insynchcamp.com" target="_blank">View the leaderboard</a>
   </div>
   <div class="footer-divider"></div>
   <div class="footer-logo">★ In Synch ICON Series · Summer 2026 ★</div>
