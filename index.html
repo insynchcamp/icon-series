@@ -204,7 +204,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
 .footer-links a{color:var(--purple-light);text-decoration:none;font-size:14px}
 .footer-links a:hover{color:#fff}
 .footer-divider{width:60px;height:1px;background:var(--purple);margin:0 auto 20px}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#2a1a40;margin-top:8px}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#ffffff;margin-top:8px}
 
 /* RESPONSIVE */
 @media(max-width:680px){
@@ -273,7 +273,13 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         </div>
         <div class="modal-field"><label>Email address *</label><input type="email" id="b-email" placeholder="your@email.com"></div>
         <div class="modal-field"><label>Phone number *</label><input type="tel" id="b-phone" placeholder="+44 ..."></div>
-        <div class="modal-field"><label>Address *</label><input type="text" id="b-addr1" placeholder="Street address" style="margin-bottom:6px"><input type="text" id="b-addr2" placeholder="Town / City" style="margin-bottom:6px"><input type="text" id="b-postcode" placeholder="Postcode"></div>
+        <div class="modal-field"><label>Street address *</label><input type="text" id="b-addr1" placeholder="Street address"></div>
+        <div class="modal-field"><label>Town / City *</label><input type="text" id="b-addr2" placeholder="Town or city"></div>
+        <div class="modal-row">
+          <div class="modal-field"><label>State / County / Region</label><input type="text" id="b-state" placeholder="Optional"></div>
+          <div class="modal-field"><label>Postcode / ZIP *</label><input type="text" id="b-postcode" placeholder="Postcode or ZIP"></div>
+        </div>
+        <div class="modal-field"><label>Country *</label><select id="b-country"><option value="">Select country...</option><option>United Kingdom</option><option>Ireland</option><option>United States</option><option>Canada</option><option>Australia</option><option>New Zealand</option><option>France</option><option>Germany</option><option>Netherlands</option><option>Belgium</option><option>Spain</option><option>Italy</option><option>Portugal</option><option>Switzerland</option><option>Austria</option><option>Sweden</option><option>Norway</option><option>Denmark</option><option>Finland</option><option>Poland</option><option>Czech Republic</option><option>Hungary</option><option>Romania</option><option>Ukraine</option><option>Russia</option><option>Japan</option><option>South Korea</option><option>China</option><option>Singapore</option><option>South Africa</option><option>Brazil</option><option>Argentina</option><option>Mexico</option><option>Other</option></select></div>
         <div class="step-nav"><button class="btn-prev" onclick="bGo(1)">← Back</button><button class="btn-next" onclick="bNext(2)">Next →</button></div>
       </div>
 
@@ -305,8 +311,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         <div class="modal-section">Medical release authorisation</div>
         <div class="consent-box">As parent and/or guardian of the named athlete, I hereby authorise the diagnosis and treatment by a qualified and licensed medical professional of the minor child in the event of a medical emergency which, in the opinion of the attending medical professional, requires immediate attention to prevent further endangerment of the minor's life, physical disfigurement, physical impairment, or other undue pain or suffering. Permission is granted to the attending physician to proceed with any medical or minor surgical treatment, x-ray examination and immunisations. Permission is also granted to In Synch ICON Series and its affiliates including Directors, Coaches, Supervisors and Team Managers to provide needed emergency treatment prior to the child's admission to a medical facility.</div>
         <label class="consent-check"><input type="checkbox" id="b-medical-consent" required><span>I confirm I have read and agree to the medical release authorisation above. *</span></label>
-        <div class="modal-section">Head coach consent</div>
-        <label class="consent-check"><input type="checkbox" id="b-coach-consent" required><span>I understand that in order to attend I must provide written consent from my head coach confirming the athlete is at an appropriate level. I will supply this separately. *</span></label>
+
         <div class="modal-section">Registration confirmation</div>
         <label class="consent-check"><input type="checkbox" id="b-reg-consent" required><span>By submitting this form I am providing an electronic signature with the same effect as a manual signature, confirming all information provided is accurate and complete. *</span></label>
         <div class="modal-field" style="margin-top:16px"><label>How did you hear about the ICON Series?</label><input type="text" id="b-source" placeholder="e.g. Instagram, coach, friend..."></div>
@@ -713,7 +718,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="venue-card">
       <div class="venue-photos">
         <div class="venue-photo-main" style="position:relative">
-          <img src="twsc.jpg" alt="Tunbridge Wells Sports Centre" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
+          <img src="TWSC.jpg" alt="Tunbridge Wells Sports Centre" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
           <span class="venue-badge tw">Tunbridge Wells</span>
         </div>
       </div>
@@ -747,7 +752,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="venue-card">
       <div class="venue-photos">
         <div class="venue-photo-main" style="position:relative">
-          <img src="lac.jpg" alt="London Aquatics Centre" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
+          <img src="LAC.jpg" alt="London Aquatics Centre" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
           <span class="venue-badge lac">London</span>
         </div>
       </div>
@@ -931,7 +936,7 @@ function bNext(fromStep){
     if(checked.length===0){alert('Please select at least one camp.');return;}
   }
   if(fromStep===2){
-    const req=['b-afirst','b-alast','b-dob','b-gender','b-club','b-hours','b-pfirst','b-plast','b-email','b-phone','b-addr1','b-postcode'];
+    const req=['b-afirst','b-alast','b-dob','b-gender','b-club','b-hours','b-pfirst','b-plast','b-email','b-phone','b-addr1','b-addr2','b-postcode','b-country'];
     for(const id of req){const el=document.getElementById(id);if(!el.value.trim()){el.focus();alert('Please complete all required fields.');return;}}
   }
   if(fromStep===3){
@@ -943,7 +948,6 @@ function bNext(fromStep){
 }
 function submitBooking(){
   if(!document.getElementById('b-medical-consent').checked){alert('Please confirm the medical release authorisation.');return;}
-  if(!document.getElementById('b-coach-consent').checked){alert('Please confirm the head coach consent.');return;}
   if(!document.getElementById('b-reg-consent').checked){alert('Please confirm the registration declaration.');return;}
   const email=document.getElementById('b-email').value.trim();
   const camps=[...document.querySelectorAll('#campChecklist input:checked')].map(c=>c.value).join(' | ');
@@ -959,7 +963,7 @@ function submitBooking(){
     parent_name:document.getElementById('b-pfirst').value+' '+document.getElementById('b-plast').value,
     parent_email:email,
     parent_phone:document.getElementById('b-phone').value,
-    address:document.getElementById('b-addr1').value+', '+document.getElementById('b-addr2').value+', '+document.getElementById('b-postcode').value,
+    address:document.getElementById('b-addr1').value+', '+document.getElementById('b-addr2').value+', '+(document.getElementById('b-state')?document.getElementById('b-state').value+', ':'')+document.getElementById('b-postcode').value+', '+(document.getElementById('b-country')?document.getElementById('b-country').value:''),
     emergency_contact:document.getElementById('b-efirst').value+' '+document.getElementById('b-elast').value,
     emergency_relationship:document.getElementById('b-erel').value,
     emergency_phone:document.getElementById('b-ephone').value,
