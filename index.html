@@ -1000,7 +1000,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function buildCalendar(){
     const mount=document.getElementById('calendarMount');
-    if(!mount)return;
+    if(!mount || mount.dataset.built) return;
+    mount.dataset.built = '1';
     const cm=campMap();
 
     MONTHS.forEach(({year,month,name})=>{
@@ -1073,7 +1074,9 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-  document.addEventListener('DOMContentLoaded',buildCalendar);
+  // Expose globally so loadVisibility can call it
+  window.buildCalendar = buildCalendar;
+
 })();
 
 // Stars
@@ -1332,6 +1335,8 @@ function defaultState() {
 }
 
 async function loadVisibility() {
+  // Build calendar first so pills exist before visibility is applied
+  if (typeof buildCalendar === 'function') buildCalendar();
   try {
     const [camps, coaches] = await Promise.all([sbGet('camp_visibility'), sbGet('coach_visibility')]);
     const def = defaultState();
