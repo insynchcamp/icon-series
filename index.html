@@ -1119,13 +1119,18 @@ function filterVenue(venue,btn){
 }
 function applyFilters(){
   document.querySelectorAll('.camp-card').forEach(card=>{
+    // Don't un-hide cards that are admin-hidden
+    const campId = card.dataset.campId;
+    const adminHidden = campId && (campState[campId] === 'hidden');
+    if(adminHidden){ card.classList.remove('hidden'); card.style.display='none'; return; }
     const coachOk=!activeCoach||card.dataset.coach===activeCoach;
     const venueOk=!activeVenue||card.dataset.venue===activeVenue;
     card.classList.toggle('hidden',!(coachOk&&venueOk));
+    if(!card.classList.contains('hidden')) card.style.display='';
   });
   // Show/hide coach groups
   document.querySelectorAll('.coach-group').forEach(group=>{
-    const visible=group.querySelectorAll('.camp-card:not(.hidden)').length>0;
+    const visible=group.querySelectorAll('.camp-card:not(.hidden)').some(c=>c.style.display!=='none');
     group.style.display=visible?'':'none';
   });
 }
@@ -1380,10 +1385,15 @@ function applyVisibility() {
   // Calendar pills
   document.querySelectorAll('.cal-camp-pill').forEach(pill => {
     const campId = pill.dataset.campId;
-    if (!campId) return;
+    if (!campId) { pill.style.display = ''; return; } // residential — always show
     const status = campState[campId] || 'hidden';
     pill.style.display = status === 'hidden' ? 'none' : '';
     pill.style.opacity = status === 'soon' ? '0.5' : '';
+  });
+  // Show calendar day cells that have at least one visible pill
+  document.querySelectorAll('.cal-day.has-camp').forEach(day => {
+    const anyVisible = [...day.querySelectorAll('.cal-camp-pill')].some(p => p.style.display !== 'none');
+    day.style.opacity = anyVisible ? '' : '0.4';
   });
 
   // Coaches
@@ -1411,8 +1421,9 @@ function applyVisibility() {
     }
   });
 
-  // Re-run camp filter to respect hidden state
-  applyFilters();
+  // Re-run filter to respect any active venue/coach filter
+  // but only if filters are active — don't override hidden state
+  if (activeCoach || activeVenue) applyFilters();
 }
 
 // ── ADMIN ──
