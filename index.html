@@ -218,6 +218,8 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 .cal-camp-pill.tw{background:var(--twsc)}
 .cal-camp-pill.lac{background:#1a5fa8}
 .cal-camp-pill.residential{background:#7a5c00}
+.cal-camp-pill.fairfield{background:#6b00aa}
+.cal-camp-pill.whiteoak{background:#c05000}
 @media(max-width:640px){
   .cal-day{min-height:56px;padding:5px 4px}
   .cal-day-num{font-size:12px}
@@ -279,6 +281,43 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
 .admin-logout:hover{border-color:#fff;color:#fff}
 /* Camp status badges */
 .status-soon{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(122,92,0,0.25);color:#cc9900;border:1px solid rgba(122,92,0,0.4);margin-left:10px;vertical-align:middle}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:200;background:#050010;border-bottom:1px solid #1a0040}
+.site-nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none}
+.site-nav-inner::-webkit-scrollbar{display:none}
+.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 20px;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;flex-shrink:0}
+.nav-link:hover{color:var(--white)}
+.nav-link.active,.nav-link:hover{border-bottom-color:var(--purple-glow);color:var(--white)}
+.nav-link.external{color:var(--purple-light)}
+
+/* 1:1 SESSIONS */
+.onetone{background:#050010;padding:56px 24px 72px}
+.onetone-inner{max-width:1100px;margin:0 auto}
+.onetone-intro{text-align:center;color:var(--muted);font-size:15px;max-width:640px;margin:0 auto 48px;line-height:1.7}
+.onetone-coach-block{margin-bottom:56px}
+.onetone-coach-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid #1a0040}
+.onetone-coach-pip{width:48px;height:48px;border-radius:50%;background:var(--purple-mid);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden}
+.onetone-coach-pip img{width:100%;height:100%;object-fit:cover;object-position:top}
+.onetone-coach-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:1px}
+.onetone-coach-sub{font-size:12px;color:var(--purple-light)}
+.onetone-sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.onetone-card{background:var(--card);border:1px solid #1a0040;border-left:4px solid var(--purple);padding:20px 22px}
+.onetone-card.full{border-left-color:#660022;opacity:0.6}
+.onetone-date{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:2px}
+.onetone-time{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--purple-glow);letter-spacing:1px;margin-bottom:6px}
+.onetone-location{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.onetone-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.onetone-price{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--white)}
+.onetone-price span{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;line-height:1}
+.btn-onetone-book{background:var(--purple);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:3px;border:none;cursor:pointer;transition:background .2s;white-space:nowrap}
+.btn-onetone-book:hover{background:var(--purple-mid)}
+.btn-onetone-full{background:#1a0010;color:#ff4466;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:3px;border:1px solid #330011;cursor:default;white-space:nowrap}
+
+/* 1:1 BOOKING MODAL */
+.ot-modal-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.ot-modal-session{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--purple-glow);margin-bottom:20px;letter-spacing:1px;line-height:1.4}
+
 </style>
 </head>
 <body>
@@ -307,8 +346,8 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
           <label class="camp-check-item"><input type="checkbox" value="ICON Romane: CONTROL · Fri 7 Aug · London Aquatics Centre · £40"><div class="camp-check-label"><strong>ICON Romane: CONTROL</strong>Fri 7 Aug · London Aquatics Centre · £40</div></label>
           <label class="camp-check-item"><input type="checkbox" value="ICON Olivia: ARTISTRY · Tue 11 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Olivia: ARTISTRY</strong>Tue 11 Aug · Tunbridge Wells Sports Centre · £55</div></label>
           <label class="camp-check-item"><input type="checkbox" value="ICON Olivia: EXPRESSION · Wed 12 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Olivia: EXPRESSION</strong>Wed 12 Aug · Tunbridge Wells Sports Centre · £55</div></label>
-          <label class="camp-check-item"><input type="checkbox" value="ICON Leilani: POWER · Wed 13 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Leilani: POWER</strong>Wed 13 Aug · Tunbridge Wells Sports Centre · £55</div></label>
-          <label class="camp-check-item"><input type="checkbox" value="ICON Leilani: ASCEND · Thu 14 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Leilani: ASCEND</strong>Thu 14 Aug · Tunbridge Wells Sports Centre · £55</div></label>
+          <label class="camp-check-item"><input type="checkbox" value="ICON Leilani: POWER · Thu 13 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Leilani: POWER</strong>Thu 13 Aug · Tunbridge Wells Sports Centre · £55</div></label>
+          <label class="camp-check-item"><input type="checkbox" value="ICON Leilani: ASCEND · Fri 14 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Leilani: ASCEND</strong>Fri 14 Aug · Tunbridge Wells Sports Centre · £55</div></label>
           <label class="camp-check-item"><input type="checkbox" value="ICON Kseniya: INTENSITY · Mon 17 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Kseniya: INTENSITY</strong>Mon 17 Aug · Tunbridge Wells Sports Centre · £55</div></label>
           <label class="camp-check-item"><input type="checkbox" value="ICON Kseniya: MASTERY · Wed 19 Aug · London Aquatics Centre · £40"><div class="camp-check-label"><strong>ICON Kseniya: MASTERY</strong>Tue 18 Aug · London Aquatics Centre · £40</div></label>
           <label class="camp-check-item"><input type="checkbox" value="ICON Kseniya: RISE · Tue 18 Aug · Tunbridge Wells · £55"><div class="camp-check-label"><strong>ICON Kseniya: RISE</strong>Tue 18 Aug · Tunbridge Wells Sports Centre · £55</div></label>
@@ -440,6 +479,19 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="badge"><div class="badge-num">2</div><div class="badge-label">Venues</div></div>
   </div>
 </section>
+
+
+<!-- NAV -->
+<nav class="site-nav" id="siteNav">
+  <div class="site-nav-inner">
+    <a class="nav-link" href="#coaches">Coaches</a>
+    <a class="nav-link" href="#camps">Camps</a>
+    <a class="nav-link" href="#onetone">1:1 Sessions</a>
+    <a class="nav-link" href="#venues">Locations</a>
+    <a class="nav-link" href="#calendar">Calendar</a>
+    <a class="nav-link external" href="https://leaderboard.insynchcamp.com" target="_blank">Leaderboard ↗</a>
+  </div>
+</nav>
 
 <!-- COACHES -->
 <section class="coaches" id="coaches">
@@ -658,7 +710,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
 
       <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw" id="camp-power" data-camp-id="power">
         <div>
-          <div class="camp-top"><span class="camp-date">Wed 13 Aug</span><span class="camp-theme">ICON Leilani: POWER</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-top"><span class="camp-date">Thu 13 Aug</span><span class="camp-theme">ICON Leilani: POWER</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Build strength, stability, and explosive movement to enhance every element of your performance.</div>
           <div class="camp-meta">
             <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
@@ -674,13 +726,13 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         <div class="camp-actions">
           <div><div class="price">£55</div><div class="price-sub">per athlete</div></div>
           <button class="btn-book" onclick="openBooking(this)">Book now</button>
-          <button class="btn-waitlist" onclick="openWaitlist('ICON Leilani · POWER · Wed 13 Aug')">Join waitlist</button>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Leilani · POWER · Thu 13 Aug')">Join waitlist</button>
         </div>
       </div>
 
       <div class="camp-card venue-tw" data-coach="leilani" data-venue="tw" id="camp-ascend" data-camp-id="ascend">
         <div>
-          <div class="camp-top"><span class="camp-date">Thu 14 Aug</span><span class="camp-theme">ICON Leilani: ASCEND</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
+          <div class="camp-top"><span class="camp-date">Fri 14 Aug</span><span class="camp-theme">ICON Leilani: ASCEND</span><span class="venue-tag tw">Tunbridge Wells Sports Centre</span></div>
           <div class="camp-subheading">Take your performance to the next level with high-level training and challenge.</div>
           <div class="camp-meta">
             <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
@@ -696,7 +748,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
         <div class="camp-actions">
           <div><div class="price">£55</div><div class="price-sub">per athlete</div></div>
           <button class="btn-book" onclick="openBooking(this)">Book now</button>
-          <button class="btn-waitlist" onclick="openWaitlist('ICON Leilani · ASCEND · Thu 14 Aug')">Join waitlist</button>
+          <button class="btn-waitlist" onclick="openWaitlist('ICON Leilani · ASCEND · Fri 14 Aug')">Join waitlist</button>
         </div>
       </div>
     </div>
@@ -776,6 +828,125 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
   </div>
 </section>
 
+
+<!-- 1:1 SESSIONS -->
+<section class="onetone" id="onetone">
+  <div class="onetone-inner">
+    <p class="section-label">Exclusive training</p>
+    <h2 class="section-title">1:1 <span>Sessions</span></h2>
+    <p class="onetone-intro">Book a private one-to-one training session with one of our ICON coaches. Limited to one athlete per session — once booked, the slot is yours.</p>
+
+    <!-- ROMANE -->
+    <div class="onetone-coach-block">
+      <div class="onetone-coach-header">
+        <div class="onetone-coach-pip"><img src="romane.jpg" alt="Romane" onerror="this.parentElement.textContent='RT'"></div>
+        <div>
+          <div class="onetone-coach-name">Romane Temessek</div>
+          <div class="onetone-coach-sub">French Artistic Swimming National Team · World Youth Solo Champion 2023</div>
+        </div>
+      </div>
+      <div class="onetone-sessions">
+
+        <div class="onetone-card" data-session-id="rom-wed-1">
+          <div class="onetone-date">Wednesday 5th August</div>
+          <div class="onetone-time">7:00pm – 8:00pm</div>
+          <div class="onetone-location">📍 Fairfield Leisure Centre, Dartford</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£30<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('rom-wed-1','Romane Temessek','Wed 5 Aug · 7:00–8:00pm · Fairfield Leisure Centre, Dartford')">Book now</button>
+          </div>
+        </div>
+
+        <div class="onetone-card" data-session-id="rom-wed-2">
+          <div class="onetone-date">Wednesday 5th August</div>
+          <div class="onetone-time">8:00pm – 9:00pm</div>
+          <div class="onetone-location">📍 Fairfield Leisure Centre, Dartford</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£30<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('rom-wed-2','Romane Temessek','Wed 5 Aug · 8:00–9:00pm · Fairfield Leisure Centre, Dartford')">Book now</button>
+          </div>
+        </div>
+
+        <div class="onetone-card" data-session-id="rom-sat-1">
+          <div class="onetone-date">Saturday 8th August</div>
+          <div class="onetone-time">6:00pm – 7:00pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£30<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('rom-sat-1','Romane Temessek','Sat 8 Aug · 6:00–7:00pm · White Oak Leisure Centre, Swanley')">Book now</button>
+          </div>
+        </div>
+
+        <div class="onetone-card" data-session-id="rom-sat-2">
+          <div class="onetone-date">Saturday 8th August</div>
+          <div class="onetone-time">7:00pm – 8:00pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£30<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('rom-sat-2','Romane Temessek','Sat 8 Aug · 7:00–8:00pm · White Oak Leisure Centre, Swanley')">Book now</button>
+          </div>
+        </div>
+
+        <div class="onetone-card" data-session-id="rom-sun-1">
+          <div class="onetone-date">Sunday 9th August</div>
+          <div class="onetone-time">10:30am – 11:30am</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£30<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('rom-sun-1','Romane Temessek','Sun 9 Aug · 10:30–11:30am · White Oak Leisure Centre, Swanley')">Book now</button>
+          </div>
+        </div>
+
+        <div class="onetone-card" data-session-id="rom-sun-2">
+          <div class="onetone-date">Sunday 9th August</div>
+          <div class="onetone-time">11:30am – 12:30pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£30<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('rom-sun-2','Romane Temessek','Sun 9 Aug · 11:30am–12:30pm · White Oak Leisure Centre, Swanley')">Book now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- KSENIYA -->
+    <div class="onetone-coach-block">
+      <div class="onetone-coach-header">
+        <div class="onetone-coach-pip"><img src="kseniya.jpg" alt="Kseniya" onerror="this.parentElement.textContent='KS'"></div>
+        <div>
+          <div class="onetone-coach-name">Kseniya Sydorenko</div>
+          <div class="onetone-coach-sub">Ex Ukrainian Artistic Swimming National Team · Four-Time Olympian</div>
+        </div>
+      </div>
+      <div class="onetone-sessions">
+
+        <div class="onetone-card" data-session-id="ks-wed-1">
+          <div class="onetone-date">Wednesday 19th August</div>
+          <div class="onetone-time">7:00pm – 8:00pm</div>
+          <div class="onetone-location">📍 Fairfield Leisure Centre, Dartford</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('ks-wed-1','Kseniya Sydorenko','Wed 19 Aug · 7:00–8:00pm · Fairfield Leisure Centre, Dartford')">Book now</button>
+          </div>
+        </div>
+
+        <div class="onetone-card" data-session-id="ks-wed-2">
+          <div class="onetone-date">Wednesday 19th August</div>
+          <div class="onetone-time">8:00pm – 9:00pm</div>
+          <div class="onetone-location">📍 Fairfield Leisure Centre, Dartford</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <button class="btn-onetone-book" onclick="openOTBooking('ks-wed-2','Kseniya Sydorenko','Wed 19 Aug · 8:00–9:00pm · Fairfield Leisure Centre, Dartford')">Book now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- VENUES -->
 <section class="venues" id="venues">
   <p class="section-label">Where we train</p>
@@ -850,11 +1021,60 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
       </div>
     </div>
 
+    <div class="venue-card">
+      <div class="venue-photos">
+        <div class="venue-photo-main" style="position:relative">
+          <img src="fairfield.jpg" alt="Fairfield Leisure Centre" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
+          <span class="venue-badge" style="background:#5a0080;color:#fff;position:absolute;top:12px;left:12px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px">1:1 Sessions</span>
+        </div>
+      </div>
+      <div class="venue-details">
+        <div class="venue-name">Fairfield Leisure Centre</div>
+        <div class="venue-address">
+          Fairfield Leisure Centre, Dartford, DA1 1NB<br>
+          <a href="https://maps.google.com/?q=Fairfield+Leisure+Centre+Dartford" target="_blank">Get directions ↗</a>
+        </div>
+        <div class="venue-features">
+          <div class="venue-feature">
+            <div class="venue-feature-title">Pool</div>
+            <div class="venue-feature-text">5m deep diving pool, ideal for 1:1 artistic swimming training sessions.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Getting there</div>
+            <div class="venue-feature-text">Located in Dartford town centre. Easy access from the A2 and M25. On-site car parking available.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="venue-card">
+      <div class="venue-photos">
+        <div class="venue-photo-main" style="position:relative">
+          <img src="whiteoak.jpg" alt="White Oak Leisure Centre" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
+          <span class="venue-badge" style="background:#5a0080;color:#fff;position:absolute;top:12px;left:12px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px">1:1 Sessions</span>
+        </div>
+      </div>
+      <div class="venue-details">
+        <div class="venue-name">White Oak Leisure Centre</div>
+        <div class="venue-address">
+          White Oak Leisure Centre, Swanley, BR8 7AF<br>
+          <a href="https://maps.google.com/?q=White+Oak+Leisure+Centre+Swanley" target="_blank">Get directions ↗</a>
+        </div>
+        <div class="venue-features">
+          <div class="venue-feature">
+            <div class="venue-feature-title">Pool</div>
+            <div class="venue-feature-text">2m deep, 25m 6-lane pool with a moveable floor — ideal for focused 1:1 artistic swimming sessions.</div>
+          </div>
+          <div class="venue-feature">
+            <div class="venue-feature-title">Getting there</div>
+            <div class="venue-feature-text">Located in Swanley, Kent. Easy access from the M25 Junction 3. On-site parking available.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
-
-
-<!-- CALENDAR -->
 <section class="calendar-section" id="calendar">
   <div class="calendar-outer">
     <p class="section-label">Summer 2026</p>
@@ -862,7 +1082,9 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:32px">
       <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:#7a5c00;display:inline-block;flex-shrink:0"></span>In Synch Residential Camp</div>
       <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:var(--twsc);display:inline-block;flex-shrink:0"></span>ICON Series · Tunbridge Wells Sports Centre</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:var(--lac);display:inline-block;flex-shrink:0"></span>ICON Series · London Aquatics Centre</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:#1a5fa8;display:inline-block;flex-shrink:0"></span>ICON Series · London Aquatics Centre</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:#6b00aa;display:inline-block;flex-shrink:0"></span>1:1 Sessions · Fairfield Leisure Centre</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span style="width:14px;height:14px;border-radius:2px;background:#c05000;display:inline-block;flex-shrink:0"></span>1:1 Sessions · White Oak Leisure Centre</div>
     </div>
     <div class="calendar-months" id="calendarMount"></div>
   </div>
@@ -957,6 +1179,15 @@ document.addEventListener('DOMContentLoaded', function(){
     {day:17, month:7, label:'ICON Kseniya: INTENSITY', venue:'tw', id:'camp-intensity'},
     {day:19, month:7, label:'ICON Kseniya: MASTERY',   venue:'lac',id:'camp-mastery'},
     {day:18, month:7, label:'ICON Kseniya: RISE',      venue:'tw', id:'camp-rise'},
+    // 1:1 Sessions
+    {day:5,  month:7, label:'1:1 Romane · 7–8pm',    venue:'fairfield', id:null, url:null, onetone:true},
+    {day:5,  month:7, label:'1:1 Romane · 8–9pm',    venue:'fairfield', id:null, url:null, onetone:true},
+    {day:8,  month:7, label:'1:1 Romane · 6–7pm',    venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:8,  month:7, label:'1:1 Romane · 7–8pm',    venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:9,  month:7, label:'1:1 Romane · 10:30am',  venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:9,  month:7, label:'1:1 Romane · 11:30am',  venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:19, month:7, label:'1:1 Kseniya · 7–8pm',   venue:'fairfield', id:null, url:null, onetone:true},
+    {day:19, month:7, label:'1:1 Kseniya · 8–9pm',   venue:'fairfield', id:null, url:null, onetone:true},
   ];
   // month:7 = August (0-indexed)
 
@@ -1055,14 +1286,18 @@ document.addEventListener('DOMContentLoaded', function(){
           const pill=document.createElement('button');
           pill.className='cal-camp-pill '+c.venue;
           // Shorten label for calendar
-          const short = c.venue==='residential' ? 'Residential Camp' : c.label.replace(/ICON \w+: /,'');
-          pill.innerHTML = c.venue==='residential'
-            ? 'In Synch Residential'
-            : '<span style="opacity:0.75;font-size:9px">'+c.label.split(':')[0]+'</span><br>'+short;
-          if(c.id) pill.dataset.campId = c.id;
-          pill.onclick = c.url
-            ? ()=>window.open(c.url,'_blank')
-            : ()=>scrollToCamp(c.id);
+          if(c.onetone){
+            pill.innerHTML = c.label;
+            pill.onclick = ()=>{ document.getElementById('onetone').scrollIntoView({behavior:'smooth'}); };
+          } else if(c.venue==='residential'){
+            pill.innerHTML = 'In Synch Residential';
+            pill.onclick = ()=>window.open(c.url,'_blank');
+          } else {
+            const short = c.label.replace(/ICON \w+: /,'');
+            pill.innerHTML = '<span style="opacity:0.75;font-size:9px">'+c.label.split(':')[0]+'</span><br>'+short;
+            if(c.id) pill.dataset.campId = c.id;
+            pill.onclick = ()=>scrollToCamp(c.id);
+          }
           cell.appendChild(pill);
         });
 
@@ -1121,7 +1356,9 @@ function applyFilters(){
   document.querySelectorAll('.camp-card').forEach(card=>{
     // Don't un-hide cards that are admin-hidden
     const campId = card.dataset.campId;
-    const adminHidden = campId && (campState[campId] === 'hidden');
+    // card stores full id e.g. 'camp-precision'; campState uses short key 'precision'
+    const shortId = campId ? campId.replace(/^camp-/, '') : null;
+    const adminHidden = shortId && (campState[shortId] === 'hidden');
     if(adminHidden){ card.classList.remove('hidden'); card.style.display='none'; return; }
     const coachOk=!activeCoach||card.dataset.coach===activeCoach;
     const venueOk=!activeVenue||card.dataset.venue===activeVenue;
@@ -1241,6 +1478,45 @@ function submitWaitlist(){
 document.getElementById('waitlistModal').addEventListener('click',function(e){if(e.target===this)closeWaitlist();});
 </script>
 
+
+<!-- 1:1 BOOKING MODAL -->
+<div class="modal-bg" id="otModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOTModal()" aria-label="Close">×</button>
+    <div id="otForm">
+      <div class="ot-modal-title">Book 1:1 Session</div>
+      <div class="ot-modal-session" id="otSessionLabel"></div>
+      <div class="modal-section">Your details</div>
+      <div class="modal-row">
+        <div class="modal-field"><label>Parent / guardian first name *</label><input type="text" id="ot-pfirst" placeholder="First name"></div>
+        <div class="modal-field"><label>Last name *</label><input type="text" id="ot-plast" placeholder="Last name"></div>
+      </div>
+      <div class="modal-field"><label>Email address *</label><input type="email" id="ot-email" placeholder="your@email.com"></div>
+      <div class="modal-field"><label>Phone number *</label><input type="tel" id="ot-phone" placeholder="+44 ..."></div>
+      <div class="modal-section">Athlete details</div>
+      <div class="modal-row">
+        <div class="modal-field"><label>Athlete first name *</label><input type="text" id="ot-afirst" placeholder="First name"></div>
+        <div class="modal-field"><label>Last name *</label><input type="text" id="ot-alast" placeholder="Last name"></div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field"><label>Date of birth *</label><input type="date" id="ot-dob"></div>
+        <div class="modal-field"><label>Club *</label><input type="text" id="ot-club" placeholder="Club name"></div>
+      </div>
+      <div class="modal-field"><label>Any medical conditions or notes</label><textarea id="ot-medical" placeholder="Optional — allergies, conditions, injuries..."></textarea></div>
+      <div class="modal-field" style="margin-top:8px">
+        <label class="consent-check"><input type="checkbox" id="ot-consent"> <span>I confirm all details are accurate. I understand payment details will be sent by email and the booking is only confirmed once payment is received. *</span></label>
+      </div>
+      <button class="modal-submit" onclick="submitOTBooking()">Request booking</button>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6">Payment details will be sent to your email within 24 hours. Session confirmed on receipt of payment.</p>
+    </div>
+    <div class="modal-success" id="otSuccess">
+      <div class="modal-success-icon">⭐</div>
+      <div class="modal-success-title">Request received!</div>
+      <div class="modal-success-text">We'll send payment details to <strong id="ot-confirm-email" style="color:var(--purple-glow)"></strong> within 24 hours. Once payment is received your session is confirmed.</div>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN FAB -->
 <button class="admin-fab" id="adminFab" title="Admin" onclick="openAdmin()">⚙</button>
 
@@ -1340,8 +1616,6 @@ function defaultState() {
 }
 
 async function loadVisibility() {
-  // Build calendar first so pills exist before visibility is applied
-  if (typeof buildCalendar === 'function') buildCalendar();
   try {
     const [camps, coaches] = await Promise.all([sbGet('camp_visibility'), sbGet('coach_visibility')]);
     const def = defaultState();
@@ -1353,13 +1627,15 @@ async function loadVisibility() {
     const def = defaultState();
     campState = def.camps; coachState = def.coaches;
   }
+  // Build calendar AFTER data is loaded so pills are stamped correctly
+  if (typeof buildCalendar === 'function') buildCalendar();
   applyVisibility();
 }
 
 function applyVisibility() {
-  // Camps
+  // Camps — CAMPS_META uses short ids ('precision'), cards have data-camp-id='camp-precision'
   CAMPS_META.forEach(c => {
-    const card = document.querySelector(`[data-camp-id="${c.id}"]`);
+    const card = document.querySelector(`[data-camp-id="camp-${c.id}"]`);
     if (!card) return;
     const status = campState[c.id] || 'hidden';
     card.style.display = status === 'hidden' ? 'none' : '';
@@ -1384,8 +1660,10 @@ function applyVisibility() {
 
   // Calendar pills
   document.querySelectorAll('.cal-camp-pill').forEach(pill => {
-    const campId = pill.dataset.campId;
-    if (!campId) { pill.style.display = ''; return; } // residential — always show
+    const rawId = pill.dataset.campId;
+    if (!rawId) { pill.style.display = ''; return; } // residential — always show
+    // pill stores full id e.g. 'camp-precision'; campState uses short key 'precision'
+    const campId = rawId.replace(/^camp-/, '');
     const status = campState[campId] || 'hidden';
     pill.style.display = status === 'hidden' ? 'none' : '';
     pill.style.opacity = status === 'soon' ? '0.5' : '';
@@ -1505,6 +1783,104 @@ async function adminSave() {
 
 // Load on page ready
 document.addEventListener('DOMContentLoaded', loadVisibility);
+</script>
+
+
+<script>
+// ── 1:1 SESSIONS ──
+let otCurrentSession = null;
+
+async function loadOTSessions() {
+  try {
+    const rows = await sbGet('session_bookings');
+    if (!rows) return;
+    rows.forEach(r => {
+      if (r.booked) markSessionFull(r.id);
+    });
+  } catch(e) {}
+}
+
+function markSessionFull(sessionId) {
+  const card = document.querySelector(`[data-session-id="${sessionId}"]`);
+  if (!card) return;
+  card.classList.add('full');
+  const btn = card.querySelector('.btn-onetone-book');
+  if (btn) {
+    const fullBtn = document.createElement('div');
+    fullBtn.className = 'btn-onetone-full';
+    fullBtn.textContent = 'Fully booked';
+    btn.replaceWith(fullBtn);
+  }
+}
+
+function openOTBooking(sessionId, coachName, sessionLabel) {
+  otCurrentSession = sessionId;
+  document.getElementById('otSessionLabel').innerHTML =
+    '<strong>' + coachName + '</strong><br>' + sessionLabel;
+  document.getElementById('otForm').style.display = '';
+  document.getElementById('otSuccess').style.display = 'none';
+  ['ot-pfirst','ot-plast','ot-email','ot-phone','ot-afirst','ot-alast','ot-club','ot-medical'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  const cb = document.getElementById('ot-consent');
+  if(cb) cb.checked = false;
+  document.getElementById('otModal').classList.add('open');
+}
+
+function closeOTModal() {
+  document.getElementById('otModal').classList.remove('open');
+}
+
+async function submitOTBooking() {
+  if (!document.getElementById('ot-consent').checked) {
+    alert('Please confirm the booking declaration.'); return;
+  }
+  const req = ['ot-pfirst','ot-plast','ot-email','ot-phone','ot-afirst','ot-alast','ot-dob','ot-club'];
+  for (const id of req) {
+    const el = document.getElementById(id);
+    if (!el || !el.value.trim()) { el && el.focus(); alert('Please complete all required fields.'); return; }
+  }
+  const email = document.getElementById('ot-email').value.trim();
+  const sessionLabel = document.getElementById('otSessionLabel').textContent;
+
+  const payload = {
+    _subject: '1:1 Session Booking — ' + document.getElementById('ot-afirst').value + ' ' + document.getElementById('ot-alast').value,
+    session: sessionLabel,
+    session_id: otCurrentSession,
+    parent_name: document.getElementById('ot-pfirst').value + ' ' + document.getElementById('ot-plast').value,
+    parent_email: email,
+    parent_phone: document.getElementById('ot-phone').value,
+    athlete_name: document.getElementById('ot-afirst').value + ' ' + document.getElementById('ot-alast').value,
+    athlete_dob: document.getElementById('ot-dob').value,
+    club: document.getElementById('ot-club').value,
+    medical: document.getElementById('ot-medical').value,
+  };
+
+  // Send email via Web3Forms
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    body: JSON.stringify({access_key: '7223be0c-e223-4f83-bc5d-f7aa0fea1073', ...payload})
+  }).catch(() => {});
+
+  // Mark session as booked in Supabase
+  try {
+    await sbUpsert('session_bookings', [{id: otCurrentSession, booked: true, email: email, session: sessionLabel}]);
+    markSessionFull(otCurrentSession);
+  } catch(e) {}
+
+  document.getElementById('ot-confirm-email').textContent = email;
+  document.getElementById('otForm').style.display = 'none';
+  document.getElementById('otSuccess').style.display = 'block';
+}
+
+document.getElementById('otModal').addEventListener('click', function(e) {
+  if (e.target === this) closeOTModal();
+});
+
+// Load 1:1 session status on page ready
+document.addEventListener('DOMContentLoaded', loadOTSessions);
 </script>
 
 </body>
