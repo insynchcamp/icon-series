@@ -203,8 +203,9 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 .calendar-outer{max-width:1100px;margin:0 auto}
 .calendar-months{display:flex;flex-direction:column;gap:40px}
 .cal-month{background:var(--card);border:1px solid #1a0040;border-radius:4px;overflow:hidden}
+.cal-month-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .cal-month-header{background:#0a0018;padding:16px 24px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--purple-light);border-bottom:1px solid #1a0040}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid #1a0040}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(52px,1fr));border-left:1px solid #1a0040;min-width:364px}
 .cal-dow{background:#080015;padding:10px 4px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-right:1px solid #1a0040;border-bottom:1px solid #1a0040}
 .cal-day{border-right:1px solid #1a0040;border-bottom:1px solid #1a0040;min-height:80px;padding:8px 6px;position:relative;vertical-align:top}
 .cal-day.empty{background:#050010}
@@ -248,7 +249,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
 }
 
 /* ── ADMIN ── */
-.admin-fab{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:#0a0018;border:1px solid #1a0040;cursor:pointer;z-index:9000;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0.3;transition:opacity .2s}
+.admin-fab{position:fixed;bottom:24px;right:24px;width:32px;height:32px;border-radius:50%;background:transparent;border:none;cursor:pointer;z-index:9000;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0.08;transition:opacity .2s;color:#ffffff}
 .admin-fab:hover{opacity:1}
 .admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9001;overflow-y:auto;padding:32px 16px}
 .admin-overlay.open{display:block}
@@ -538,7 +539,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
       <div class="coach-info">
         <div class="coach-name">Kseniya Sydorenko</div>
         <div class="coach-title">Ex Ukrainian Artistic Swimming National Team · Four-Time Olympian</div>
-        <div class="coach-camps-count">3 camps · 18–19 Aug · tap to filter</div>
+        <div class="coach-camps-count">3 camps · 17–19 Aug · tap to filter</div>
         <div class="coach-bio">Kseniya Sydorenko is an Olympic medalist and one of Ukraine's most accomplished artistic swimmers, having competed at four Olympic Games and winning bronze at Tokyo 2020. She is also a multiple-time European champion and World Championship medallist, with over a decade of experience competing at the highest level of the sport.<br><br>Known for her consistency, strength, and technical excellence, Kseniya brings a wealth of elite performance knowledge to her coaching. She is passionate about sharing the discipline, detail, and mindset required to succeed at the top level of artistic swimming.</div>
       </div>
     </div>
@@ -665,7 +666,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
           <div class="camp-subheading">Develop expression, creativity, and performance quality in every movement.</div>
           <div class="camp-meta">
             <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
-            <span class="meta-item">🏊 <strong>3h pool</strong> + 2h land</span>
+            <span class="meta-item">🏊 <strong>2.5h pool</strong> + 2.5h land</span>
             <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
             <span class="meta-item">👥 <strong>Max 20 places</strong></span>
           </div>
@@ -687,7 +688,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
           <div class="camp-subheading">Bring routines to life through emotion, interpretation, and connection to music.</div>
           <div class="camp-meta">
             <span class="meta-item">🕙 <strong>10:00am – 4:00pm</strong></span>
-            <span class="meta-item">🏊 <strong>3h pool</strong> + 2h land</span>
+            <span class="meta-item">🏊 <strong>2.5h pool</strong> + 2.5h land</span>
             <span class="meta-item">🎂 <strong>Ages 10–18</strong></span>
             <span class="meta-item">👥 <strong>Max 20 places</strong></span>
           </div>
@@ -1304,7 +1305,10 @@ document.addEventListener('DOMContentLoaded', function(){
         grid.appendChild(cell);
       }
 
-      section.appendChild(grid);
+      const scroll=document.createElement('div');
+      scroll.className='cal-month-scroll';
+      scroll.appendChild(grid);
+      section.appendChild(scroll);
       mount.appendChild(section);
     });
   }
