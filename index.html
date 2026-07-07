@@ -274,6 +274,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
 .admin-toggle.active-live{background:#2D8B6B;border-color:#2D8B6B;color:#fff}
 .admin-toggle.active-soon{background:#7a5c00;border-color:#aa8800;color:#fff}
 .admin-toggle.active-hidden{background:#3a0010;border-color:#660022;color:#ff8899}
+.admin-toggle.active-soldout{background:#4a0000;border-color:#880000;color:#ff6666}
 .admin-save-bar{margin-top:32px;display:flex;gap:12px;align-items:center}
 .admin-save-btn{background:var(--purple);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 32px;border:none;border-radius:3px;cursor:pointer;transition:background .2s}
 .admin-save-btn:hover{background:var(--purple-mid)}
@@ -1583,12 +1584,23 @@ function submitBooking(){
     heard_about:document.getElementById('b-source').value,
     notes:document.getElementById('b-notes').value
   };
-  // Web3Forms — free, unlimited submissions
+  // Web3Forms — email notification
   const WEB3FORMS_KEY='7223be0c-e223-4f83-bc5d-f7aa0fea1073';
-  {
-    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:WEB3FORMS_KEY,...payload})})
-    .catch(()=>{});
-  }
+  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:WEB3FORMS_KEY,...payload})}).catch(()=>{});
+
+  // Google Sheets — log booking
+  const sheetPayload = Object.assign({type:'camp'}, payload, {
+    athlete_first: document.getElementById('b-afirst').value.trim(),
+    athlete_last:  document.getElementById('b-alast').value.trim(),
+    athlete_dob:   document.getElementById('b-dob').value,
+    athlete_gender:document.getElementById('b-gender').value,
+    parent_first:  document.getElementById('b-pfirst').value.trim(),
+    parent_last:   document.getElementById('b-plast').value.trim(),
+    emergency_contact: document.getElementById('b-efirst').value.trim()+' '+document.getElementById('b-elast').value.trim(),
+    emergency_relationship: document.getElementById('b-erel').value,
+    emergency_phone: document.getElementById('b-ephone').value.trim(),
+  });
+  fetch('https://script.google.com/macros/s/AKfycbzoK1o3Bra7kmK7PanJpFtYhbca3FmCjZInM1ljQu2ym3vhmV0RFFlutWYU9L6-aeMH/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(sheetPayload)}).catch(()=>{});
   document.getElementById('b-confirm-email').textContent=email;
   document.getElementById('bookingForm').style.display='none';
   document.getElementById('bookingSuccess').style.display='block';
@@ -1684,6 +1696,9 @@ document.getElementById('waitlistModal').addEventListener('click',function(e){if
       <div class="admin-section-title">Camp visibility</div>
       <div id="adminCampRows"></div>
 
+      <div class="admin-section-title">Camp capacity — sold out</div>
+      <div id="adminSoldOutRows"></div>
+
       <div class="admin-save-bar">
         <button class="admin-save-btn" onclick="adminSave()">Save &amp; publish</button>
         <span class="admin-save-status" id="adminSaveStatus"></span>
@@ -1742,28 +1757,32 @@ const COACHES_META = [
   {id:'bianca',  label:'Bianca Hofstatter'},
 ];
 
-let campState = {};   // id → 'live'|'soon'|'hidden'
-let coachState = {}; // id → 'live'|'soon'|'hidden'
+let campState = {};    // id → 'live'|'soon'|'hidden'
+let coachState = {};   // id → 'live'|'soon'|'hidden'
+let soldOutState = {}; // id → true|false
 
 // Default: Romane live, others hidden
 function defaultState() {
   const cs = {}, cc = {};
   CAMPS_META.forEach(c => cs[c.id] = ['precision','perform','elevate','control'].includes(c.id) ? 'live' : 'hidden');
   COACHES_META.forEach(c => cc[c.id] = c.id === 'romane' ? 'live' : 'hidden');
-  return {camps: cs, coaches: cc};
+  const so = {};
+  CAMPS_META.forEach(c => so[c.id] = false);
+  return {camps: cs, coaches: cc, soldout: so};
 }
 
 async function loadVisibility() {
   try {
-    const [camps, coaches] = await Promise.all([sbGet('camp_visibility'), sbGet('coach_visibility')]);
+    const [camps, coaches, soldout] = await Promise.all([sbGet('camp_visibility'), sbGet('coach_visibility'), sbGet('camp_soldout')]);
     const def = defaultState();
     campState = Object.assign({}, def.camps);
     coachState = Object.assign({}, def.coaches);
     if (camps && camps.length) camps.forEach(r => campState[r.id] = r.status);
     if (coaches && coaches.length) coaches.forEach(r => coachState[r.id] = r.status);
+    if (soldout && soldout.length) soldout.forEach(r => soldOutState[r.id] = r.soldout);
   } catch(e) {
     const def = defaultState();
-    campState = def.camps; coachState = def.coaches;
+    campState = def.camps; coachState = def.coaches; soldOutState = def.soldout;
   }
   // Build calendar AFTER data is loaded so pills are stamped correctly
   if (typeof buildCalendar === 'function') buildCalendar();
@@ -1793,6 +1812,25 @@ function applyVisibility() {
     } else if (status === 'live') {
       const bookBtn = card.querySelector('.btn-book');
       if (bookBtn) { bookBtn.style.opacity=''; bookBtn.style.pointerEvents=''; }
+    }
+    // Sold out overlay
+    card.querySelectorAll('.admin-soldout-badge').forEach(el => el.remove());
+    if (soldOutState[c.id]) {
+      const bookBtn = card.querySelector('.btn-book');
+      if (bookBtn) {
+        const badge = document.createElement('div');
+        badge.className = 'btn-waitlist admin-soldout-badge';
+        badge.style.cssText = 'background:#3a0010;border-color:#660022;color:#ff6666;cursor:default;text-align:center;padding:11px 22px';
+        badge.textContent = 'Sold out';
+        bookBtn.style.display = 'none';
+        bookBtn.parentNode.insertBefore(badge, bookBtn);
+      }
+      // Show waitlist button
+      const wlBtn = card.querySelector('.btn-waitlist:not(.admin-soldout-badge)');
+      if (wlBtn) wlBtn.style.display = 'block';
+    } else {
+      const bookBtn = card.querySelector('.btn-book');
+      if (bookBtn) bookBtn.style.display = '';
     }
   });
 
@@ -1872,6 +1910,35 @@ function showAdminControls() {
   document.getElementById('adminControls').style.display = '';
   buildAdminRows('adminCoachRows', COACHES_META, coachState);
   buildAdminRows('adminCampRows', CAMPS_META, campState);
+  buildSoldOutRows('adminSoldOutRows', CAMPS_META, soldOutState);
+}
+
+function buildSoldOutRows(containerId, meta, state) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  meta.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'admin-row';
+    const lbl = document.createElement('div');
+    lbl.innerHTML = `<div class="admin-row-label">${item.label}</div>${item.date ? `<div class="admin-row-sub">${item.date}</div>` : ''}`;
+    const btns = document.createElement('div');
+    btns.className = 'admin-toggle-group';
+    [['false','Places available'],['true','Sold out']].forEach(([val, label]) => {
+      const btn = document.createElement('button');
+      const isActive = String(state[item.id]) === val;
+      btn.className = 'admin-toggle' + (isActive ? (val==='true' ? ' active-soldout' : ' active-live') : '');
+      btn.textContent = label;
+      btn.onclick = () => {
+        state[item.id] = val === 'true';
+        btns.querySelectorAll('.admin-toggle').forEach(b => b.className = 'admin-toggle');
+        btn.className = 'admin-toggle ' + (val==='true' ? 'active-soldout' : 'active-live');
+      };
+      btns.appendChild(btn);
+    }});
+    row.appendChild(lbl);
+    row.appendChild(btns);
+    container.appendChild(row);
+  });
 }
 
 function buildAdminRows(containerId, meta, state) {
@@ -1906,11 +1973,13 @@ async function adminSave() {
   statusEl.textContent = 'Saving...';
   const campRows = CAMPS_META.map(c => ({id: c.id, status: campState[c.id] || 'hidden'}));
   const coachRows = COACHES_META.map(c => ({id: c.id, status: coachState[c.id] || 'hidden'}));
-  const [ok1, ok2] = await Promise.all([
+  const soldOutRows = CAMPS_META.map(c => ({id: c.id, soldout: soldOutState[c.id] || false}));
+  const [ok1, ok2, ok3] = await Promise.all([
     sbUpsert('camp_visibility', campRows),
-    sbUpsert('coach_visibility', coachRows)
+    sbUpsert('coach_visibility', coachRows),
+    sbUpsert('camp_soldout', soldOutRows)
   ]);
-  if (ok1 && ok2) {
+  if (ok1 && ok2 && ok3) {
     statusEl.textContent = '✓ Published';
     applyVisibility();
     setTimeout(() => statusEl.textContent = '', 3000);
@@ -1995,12 +2064,29 @@ async function submitOTBooking() {
     medical: document.getElementById('ot-medical').value,
   };
 
-  // Send email via Web3Forms
+  // Web3Forms — email notification
   fetch('https://api.web3forms.com/submit', {
     method: 'POST',
     headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     body: JSON.stringify({access_key: '7223be0c-e223-4f83-bc5d-f7aa0fea1073', ...payload})
   }).catch(() => {});
+
+  // Google Sheets — log 1:1 booking
+  const otSheetPayload = {
+    type: '1:1',
+    session: payload.session,
+    session_id: otCurrentSession,
+    athlete_first: document.getElementById('ot-afirst').value.trim(),
+    athlete_last:  document.getElementById('ot-alast').value.trim(),
+    athlete_dob:   document.getElementById('ot-dob').value,
+    club:          document.getElementById('ot-club').value.trim(),
+    parent_first:  document.getElementById('ot-pfirst').value.trim(),
+    parent_last:   document.getElementById('ot-plast').value.trim(),
+    parent_email:  email,
+    parent_phone:  document.getElementById('ot-phone').value.trim(),
+    medical:       document.getElementById('ot-medical').value.trim(),
+  };
+  fetch('https://script.google.com/macros/s/AKfycbzoK1o3Bra7kmK7PanJpFtYhbca3FmCjZInM1ljQu2ym3vhmV0RFFlutWYU9L6-aeMH/exec', {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(otSheetPayload)}).catch(()=>{});
 
   // Mark session as booked in Supabase
   try {
