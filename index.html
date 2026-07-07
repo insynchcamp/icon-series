@@ -985,13 +985,13 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
           </div>
         </div>
 
-        <div class="onetone-card" data-session-id="ks-wed-2">
+        <div class="onetone-card full" data-session-id="ks-wed-2">
           <div class="onetone-date">Wednesday 19th August</div>
           <div class="onetone-time">8:00pm – 9:00pm</div>
           <div class="onetone-location">📍 Fairfield Leisure Centre, Dartford</div>
           <div class="onetone-footer">
             <div class="onetone-price">£50<span>per athlete</span></div>
-            <button class="btn-onetone-book" onclick="openOTBooking('ks-wed-2','Kseniya Sydorenko','Wed 19 Aug · 8:00–9:00pm · Fairfield Leisure Centre, Dartford')">Book now</button>
+            <div class="btn-onetone-full">Sold out</div>
           </div>
         </div>
 
@@ -1366,7 +1366,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function buildCalendar(){
     const mount=document.getElementById('calendarMount');
-    if(!mount || mount.dataset.built) return;
+    if(!mount) return;
+    if(mount.dataset.built) return;
     mount.dataset.built = '1';
     const cm=campMap();
 
@@ -1784,6 +1785,7 @@ const COACHES_META = [
 let campState = {};    // id → 'live'|'soon'|'hidden'
 let coachState = {};   // id → 'live'|'soon'|'hidden'
 let soldOutState = {}; // id → true|false
+let visibilityLoaded = false; // true once Supabase data arrives
 
 // Default: Romane live, others hidden
 function defaultState() {
@@ -1808,9 +1810,6 @@ async function loadVisibility() {
   ]);
   // Apply visibility after data loads — calendar already built
   applyVisibility();
-  // Reveal calendar now that visibility is correctly applied
-  const mount = document.getElementById('calendarMount');
-  if (mount) mount.style.visibility = '';
 }
 
 function applyVisibility() {
@@ -1858,16 +1857,22 @@ function applyVisibility() {
     }
   });
 
-  // Calendar pills
-  document.querySelectorAll('.cal-camp-pill').forEach(pill => {
-    const rawId = pill.dataset.campId;
-    if (!rawId) { pill.style.display = ''; return; } // residential — always show
-    // pill stores full id e.g. 'camp-precision'; campState uses short key 'precision'
-    const campId = rawId.replace(/^camp-/, '');
-    const status = campState[campId] || 'hidden';
-    pill.style.display = status === 'hidden' ? 'none' : '';
-    pill.style.opacity = status === 'soon' ? '0.5' : '';
-  });
+  // Calendar pills — only hide/show once Supabase data has loaded
+  if (visibilityLoaded) {
+    document.querySelectorAll('.cal-camp-pill').forEach(pill => {
+      const rawId = pill.dataset.campId;
+      if (!rawId) { pill.style.display = ''; return; } // residential — always show
+      const campId = rawId.replace(/^camp-/, '');
+      const status = campState[campId] || 'hidden';
+      pill.style.display = status === 'hidden' ? 'none' : '';
+      pill.style.opacity = status === 'soon' ? '0.5' : '';
+    });
+  } else {
+    // Before Supabase loads, show all pills so calendar is visible
+    document.querySelectorAll('.cal-camp-pill').forEach(pill => {
+      pill.style.display = '';
+    });
+  }
   // Show calendar day cells that have at least one visible pill
   document.querySelectorAll('.cal-day.has-camp').forEach(day => {
     const anyVisible = [...day.querySelectorAll('.cal-camp-pill')].some(p => p.style.display !== 'none');
@@ -2015,8 +2020,6 @@ async function adminSave() {
 // Load on page ready
 // Build calendar immediately — no dependency on Supabase
 document.addEventListener('DOMContentLoaded', function(){
-  const mount = document.getElementById('calendarMount');
-  if (mount) mount.style.visibility = 'hidden';
   if (typeof buildCalendar === 'function') buildCalendar();
 });
 
