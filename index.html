@@ -319,6 +319,24 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
 .ot-modal-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px}
 .ot-modal-session{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--purple-glow);margin-bottom:20px;letter-spacing:1px;line-height:1.4}
 
+
+/* MEET THE TEAM */
+.team-section{background:#000;padding:40px 24px 64px;border-top:1px solid #1a0040}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3px;max-width:1100px;margin:0 auto}
+.team-card{background:var(--card);padding:0;border-top:3px solid #3a0060}
+.team-photo{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:top center;display:block;background:#0a0020}
+.team-photo-placeholder{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#0d0025,#1a0040);display:flex;align-items:center;justify-content:center}
+.team-initial{font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;color:#3a0060;line-height:1}
+.team-info{padding:24px 24px 28px}
+.team-role{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7a44aa;margin-bottom:6px}
+.team-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px;letter-spacing:1px}
+.team-title{font-size:12px;color:var(--purple-light);line-height:1.5;margin-bottom:12px}
+.team-bio{font-size:13px;color:var(--muted);line-height:1.65;border-top:1px solid #1a0040;padding-top:14px;margin-top:4px}
+.team-quals{margin-top:12px;padding-top:12px;border-top:1px solid #1a0040}
+.team-quals-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7a44aa;margin-bottom:8px}
+.team-qual-item{font-size:12px;color:var(--muted);line-height:1.6;padding-left:12px;position:relative;margin-bottom:2px}
+.team-qual-item::before{content:'·';position:absolute;left:0;color:#3a0060}
+
 </style>
 </head>
 <body>
@@ -475,7 +493,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
   </div>
   <div class="hero-badges">
     <div class="badge"><div class="badge-num">11</div><div class="badge-label">Camp days</div></div>
-    <div class="badge"><div class="badge-num">4</div><div class="badge-label">ICON coaches</div></div>
+    <div class="badge"><div class="badge-num">5</div><div class="badge-label">ICON coaches</div></div>
     <div class="badge"><div class="badge-num">20</div><div class="badge-label">Max per day</div></div>
     <div class="badge"><div class="badge-num">2</div><div class="badge-label">Venues</div></div>
   </div>
@@ -544,8 +562,42 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
       </div>
     </div>
 
+    <div class="coach-card" onclick="filterCoach('bianca')" id="coach-bianca" data-coach-id="bianca">
+      <img src="bianca.jpg" alt="Bianca Hofstatter" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">BH</div></div>
+      <div class="coach-info">
+        <div class="coach-name">Bianca Hofstatter</div>
+        <div class="coach-title">Former Austrian &amp; USA National Team Artistic Swimmer</div>
+        <div class="coach-camps-count">1:1 sessions available throughout August</div>
+        <div class="coach-bio">Bianca Hofstatter is a former artistic swimmer who represented both the Austrian and USA National Teams. Born in the United States, she moved to Austria for four years — graduating high school there before returning to the USA — competing internationally along the way.<br><br>Her achievements include winning gold at the 2019 Swedish Open, Austrian Nationals, and Hungarian Open in Solo, silver at the 2021 U.S. Junior National Championship in Free Solo, and bronze at the 2019 Ukrainian Open. She has since built an international coaching career, leading training sessions for athletes all over the world and coaching at In Synch Summer Residential Camp in both 2025 and 2026.</div>
+      </div>
+    </div>
+
+    <div class="coach-card" id="coach-daisy" data-coach-id="daisy">
+      <img src="daisy.jpg" alt="Daisy Gunn" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">DG</div></div>
+      <div class="coach-info">
+        <div class="coach-name">Daisy Gunn</div>
+        <div class="coach-title">Former Great Britain National Team Artistic Swimmer</div>
+        <div class="coach-camps-count">Assistant coaching throughout the ICON Series</div>
+        <div class="coach-bio">Daisy Gunn is a former member of the Great Britain Senior National Team, having represented her country in international competitions at the highest level. Since retiring from elite competition, Daisy has transitioned into coaching, bringing her extensive experience and love for the sport to help athletes of all ages achieve their goals.<br><br>Her achievements include Silver in Free Team at the French Open 2020, 4th place at the European Championships 2022, and 6th place at the World Championships 2022.<br><br>Daisy is a Level 1 Swim England Artistic Swimming Coach and holds a Safeguarding and Protecting Children &amp; Young People qualification. She also holds a degree in Sports Rehabilitation from the University of Bristol.</div>
+      </div>
+    </div>
+
+    <div class="coach-card" id="coach-maisie" data-coach-id="maisie">
+      <img src="maisie.jpg" alt="Maisie Wright" class="coach-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="coach-photo-placeholder" style="display:none"><div class="coach-initial-large">MW</div></div>
+      <div class="coach-info">
+        <div class="coach-name">Maisie Wright</div>
+        <div class="coach-title">Camp Director &amp; Assistant Coaching Throughout the ICON Series</div>
+        <div class="coach-camps-count">Head Coach · London Regional AS &amp; Erith &amp; District AS</div>
+        <div class="coach-bio">Maisie Wright is Camp Director for In Synch's ICON Series this August. As current Head Coach at London Regional Artistic Swimming and Erith &amp; District AS Club, Maisie brings exceptional organisational and coaching expertise to the series.<br><br>In 2023 she was awarded South East Swim England Artistic Swimming Coach of the Year. She is a Swim England Level 2 Artistic Swimming Coach with a comprehensive set of qualifications across coaching, safeguarding, and athlete welfare.<br><br>Qualifications include: Swim England Level 2 Artistic Swimming Coach · STA Award in Swimming Teaching · Enhanced DBS Check · UK Coaching Safeguarding &amp; Protecting Children &amp; Young People · Safeguarding Deaf and Disabled Children · Mental Health Youth Awareness Training · Level 3 Certificate in Counselling Studies · RLSS National Rescue Award for Teachers and Coaches · Swim England Level 2 Team Manager.</div>
+      </div>
+    </div>
+
   </div>
 </section>
+
 
 <!-- FILTER BAR -->
 <div class="filter-bar" id="filterBar">
@@ -945,6 +997,81 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
       </div>
     </div>
 
+
+    <!-- BIANCA -->
+    <div class="onetone-coach-block">
+      <div class="onetone-coach-header">
+        <div class="onetone-coach-pip"><img src="bianca.jpg" alt="Bianca" onerror="this.parentElement.textContent='BH'"></div>
+        <div>
+          <div class="onetone-coach-name">Bianca Hofstatter</div>
+          <div class="onetone-coach-sub">Former Austrian &amp; USA National Team Artistic Swimmer</div>
+        </div>
+      </div>
+      <div class="onetone-sessions">
+
+        <div class="onetone-card full" data-session-id="bi-jul-1">
+          <div class="onetone-date">Friday 25th July</div>
+          <div class="onetone-time">6:00pm – 7:00pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <div class="btn-onetone-full">Sold out</div>
+          </div>
+        </div>
+
+        <div class="onetone-card full" data-session-id="bi-jul-2">
+          <div class="onetone-date">Friday 25th July</div>
+          <div class="onetone-time">7:00pm – 8:00pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <div class="btn-onetone-full">Sold out</div>
+          </div>
+        </div>
+
+        <div data-session-id="bi-sat-1" class="onetone-card full">
+          <div class="onetone-date">Saturday 1st August</div>
+          <div class="onetone-time">6:00pm – 7:00pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <div class="btn-onetone-full">Sold out</div>
+          </div>
+        </div>
+
+        <div data-session-id="bi-sat-2" class="onetone-card full">
+          <div class="onetone-date">Saturday 1st August</div>
+          <div class="onetone-time">7:00pm – 8:00pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <div class="btn-onetone-full">Sold out</div>
+          </div>
+        </div>
+
+        <div data-session-id="bi-sun-1" class="onetone-card full">
+          <div class="onetone-date">Sunday 2nd August</div>
+          <div class="onetone-time">10:30am – 11:30am</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <div class="btn-onetone-full">Sold out</div>
+          </div>
+        </div>
+
+        <div data-session-id="bi-sun-2" class="onetone-card full">
+          <div class="onetone-date">Sunday 2nd August</div>
+          <div class="onetone-time">11:30am – 12:30pm</div>
+          <div class="onetone-location">📍 White Oak Leisure Centre, Swanley</div>
+          <div class="onetone-footer">
+            <div class="onetone-price">£50<span>per athlete</span></div>
+            <div class="btn-onetone-full">Sold out</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1189,6 +1316,12 @@ document.addEventListener('DOMContentLoaded', function(){
     {day:9,  month:7, label:'1:1 Romane · 11:30am',  venue:'whiteoak',  id:null, url:null, onetone:true},
     {day:19, month:7, label:'1:1 Kseniya · 7–8pm',   venue:'fairfield', id:null, url:null, onetone:true},
     {day:19, month:7, label:'1:1 Kseniya · 8–9pm',   venue:'fairfield', id:null, url:null, onetone:true},
+    {day:25, month:6, label:'1:1 Bianca · 6–7pm',    venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:25, month:6, label:'1:1 Bianca · 7–8pm',    venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:1,  month:7, label:'1:1 Bianca · 6–7pm',    venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:1,  month:7, label:'1:1 Bianca · 7–8pm',    venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:2,  month:7, label:'1:1 Bianca · 10:30am',  venue:'whiteoak',  id:null, url:null, onetone:true},
+    {day:2,  month:7, label:'1:1 Bianca · 11:30am',  venue:'whiteoak',  id:null, url:null, onetone:true},
   ];
   // month:7 = August (0-indexed)
 
@@ -1606,6 +1739,7 @@ const COACHES_META = [
   {id:'olivia',  label:'Olivia Federici'},
   {id:'leilani', label:'Leilani Torres'},
   {id:'kseniya', label:'Kseniya Sydorenko'},
+  {id:'bianca',  label:'Bianca Hofstatter'},
 ];
 
 let campState = {};   // id → 'live'|'soon'|'hidden'
