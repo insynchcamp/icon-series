@@ -1561,8 +1561,31 @@ function submitBooking(){
   const email=document.getElementById('b-email').value.trim();
   const camps=[...document.querySelectorAll('#campChecklist input:checked')].map(c=>c.value).join(' | ');
 
-  const payload={
+  // Web3Forms payload — concise for email display
+  const emailPayload={
     _subject:'New ICON Series Booking — '+document.getElementById('b-afirst').value+' '+document.getElementById('b-alast').value,
+    '1_Camps':camps,
+    '2_Athlete':document.getElementById('b-afirst').value+' '+document.getElementById('b-alast').value,
+    '3_DOB':document.getElementById('b-dob').value,
+    '4_Gender':document.getElementById('b-gender').value,
+    '5_Club':document.getElementById('b-club').value,
+    '6_Training':document.getElementById('b-hours').value,
+    '7_Parent':document.getElementById('b-pfirst').value+' '+document.getElementById('b-plast').value,
+    '8_Email':email,
+    '9_Phone':document.getElementById('b-phone').value,
+    '10_Address':document.getElementById('b-addr1').value+', '+document.getElementById('b-addr2').value+', '+document.getElementById('b-postcode').value+', '+document.getElementById('b-country').value,
+    '11_Emergency':document.getElementById('b-efirst').value+' '+document.getElementById('b-elast').value+' ('+document.getElementById('b-erel').value+') '+document.getElementById('b-ephone').value,
+    '12_Medical':document.getElementById('b-medical').value,
+    '13_Inhaler':document.getElementById('b-inhaler').value,
+    '14_Medication':document.getElementById('b-meds').value,
+    '15_PhotoConsent':(document.getElementById('b-photo1').checked?'Yes':'No')+' / '+(document.getElementById('b-photo2').checked?'Yes':'No'),
+    '16_Source':document.getElementById('b-source').value,
+    '17_Notes':document.getElementById('b-notes').value
+  };
+
+  // Full payload for Google Sheets
+  const payload={
+    _subject:emailPayload._subject,
     camps_selected:camps,
     athlete_name:document.getElementById('b-afirst').value+' '+document.getElementById('b-alast').value,
     athlete_dob:document.getElementById('b-dob').value,
@@ -1584,9 +1607,10 @@ function submitBooking(){
     heard_about:document.getElementById('b-source').value,
     notes:document.getElementById('b-notes').value
   };
-  // Web3Forms — email notification
+
+  // Web3Forms — send concise email version
   const WEB3FORMS_KEY='7223be0c-e223-4f83-bc5d-f7aa0fea1073';
-  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:WEB3FORMS_KEY,...payload})}).catch(()=>{});
+  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:WEB3FORMS_KEY,...emailPayload})}).catch(()=>{});
 
   // Google Sheets — log booking
   const sheetPayload = Object.assign({type:'camp'}, payload, {
@@ -2090,9 +2114,25 @@ async function submitOTBooking() {
 
   // Mark session as booked in Supabase
   try {
-    await sbUpsert('session_bookings', [{id: otCurrentSession, booked: true, email: email, session: sessionLabel}]);
+    const res = await fetch(`${SB_URL}/rest/v1/session_bookings`, {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=minimal'
+      },
+      body: JSON.stringify([{id: otCurrentSession, booked: true, email: email, session: sessionLabel}])
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('Supabase session_bookings error:', res.status, err);
+    }
     markSessionFull(otCurrentSession);
-  } catch(e) {}
+  } catch(e) {
+    console.error('Session booking error:', e);
+    markSessionFull(otCurrentSession); // still mark on client even if DB fails
+  }
 
   document.getElementById('ot-confirm-email').textContent = email;
   document.getElementById('otForm').style.display = 'none';
