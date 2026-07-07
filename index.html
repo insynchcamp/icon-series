@@ -975,13 +975,13 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
       </div>
       <div class="onetone-sessions">
 
-        <div class="onetone-card" data-session-id="ks-wed-1">
+        <div class="onetone-card full" data-session-id="ks-wed-1">
           <div class="onetone-date">Wednesday 19th August</div>
           <div class="onetone-time">7:00pm – 8:00pm</div>
           <div class="onetone-location">📍 Fairfield Leisure Centre, Dartford</div>
           <div class="onetone-footer">
             <div class="onetone-price">£50<span>per athlete</span></div>
-            <button class="btn-onetone-book" onclick="openOTBooking('ks-wed-1','Kseniya Sydorenko','Wed 19 Aug · 7:00–8:00pm · Fairfield Leisure Centre, Dartford')">Book now</button>
+            <div class="btn-onetone-full">Sold out</div>
           </div>
         </div>
 
@@ -1796,18 +1796,16 @@ function defaultState() {
 }
 
 async function loadVisibility() {
-  try {
-    const [camps, coaches, soldout] = await Promise.all([sbGet('camp_visibility'), sbGet('coach_visibility'), sbGet('camp_soldout')]);
-    const def = defaultState();
-    campState = Object.assign({}, def.camps);
-    coachState = Object.assign({}, def.coaches);
-    if (camps && camps.length) camps.forEach(r => campState[r.id] = r.status);
-    if (coaches && coaches.length) coaches.forEach(r => coachState[r.id] = r.status);
-    if (soldout && soldout.length) soldout.forEach(r => soldOutState[r.id] = r.soldout);
-  } catch(e) {
-    const def = defaultState();
-    campState = def.camps; coachState = def.coaches; soldOutState = def.soldout;
-  }
+  const def = defaultState();
+  campState = Object.assign({}, def.camps);
+  coachState = Object.assign({}, def.coaches);
+  soldOutState = Object.assign({}, def.soldout);
+  // Fetch each independently so one failure doesn't block the rest
+  await Promise.allSettled([
+    sbGet('camp_visibility').then(r => { if(r && r.length) r.forEach(x => campState[x.id] = x.status); }).catch(()=>{}),
+    sbGet('coach_visibility').then(r => { if(r && r.length) r.forEach(x => coachState[x.id] = x.status); }).catch(()=>{}),
+    sbGet('camp_soldout').then(r => { if(r && r.length) r.forEach(x => soldOutState[x.id] = x.soldout); }).catch(()=>{}),
+  ]);
   // Build calendar AFTER data is loaded so pills are stamped correctly
   if (typeof buildCalendar === 'function') buildCalendar();
   applyVisibility();
