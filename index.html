@@ -1806,9 +1806,11 @@ async function loadVisibility() {
     sbGet('coach_visibility').then(r => { if(r && r.length) r.forEach(x => coachState[x.id] = x.status); }).catch(()=>{}),
     sbGet('camp_soldout').then(r => { if(r && r.length) r.forEach(x => soldOutState[x.id] = x.soldout); }).catch(()=>{}),
   ]);
-  // Build calendar AFTER data is loaded so pills are stamped correctly
-  if (typeof buildCalendar === 'function') buildCalendar();
+  // Apply visibility after data loads — calendar already built
   applyVisibility();
+  // Reveal calendar now that visibility is correctly applied
+  const mount = document.getElementById('calendarMount');
+  if (mount) mount.style.visibility = '';
 }
 
 function applyVisibility() {
@@ -2011,6 +2013,13 @@ async function adminSave() {
 }
 
 // Load on page ready
+// Build calendar immediately — no dependency on Supabase
+document.addEventListener('DOMContentLoaded', function(){
+  const mount = document.getElementById('calendarMount');
+  if (mount) mount.style.visibility = 'hidden';
+  if (typeof buildCalendar === 'function') buildCalendar();
+});
+
 document.addEventListener('DOMContentLoaded', loadVisibility);
 </script>
 
