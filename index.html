@@ -496,7 +496,7 @@ footer{background:#000;padding:48px 24px 40px;text-align:center;border-top:1px s
     <div class="badge"><div class="badge-num">11</div><div class="badge-label">Camp days</div></div>
     <div class="badge"><div class="badge-num">5</div><div class="badge-label">ICON coaches</div></div>
     <div class="badge"><div class="badge-num">20</div><div class="badge-label">Max per day</div></div>
-    <div class="badge"><div class="badge-num">2</div><div class="badge-label">Venues</div></div>
+    <div class="badge"><div class="badge-num">4</div><div class="badge-label">Venues</div></div>
   </div>
 </section>
 
@@ -1367,8 +1367,8 @@ document.addEventListener('DOMContentLoaded', function(){
   function buildCalendar(){
     const mount=document.getElementById('calendarMount');
     if(!mount) return;
-    if(mount.dataset.built) return;
-    mount.dataset.built = '1';
+    // Clear and rebuild each time
+    mount.innerHTML = '';
     const cm=campMap();
 
     MONTHS.forEach(({year,month,name})=>{
@@ -1448,8 +1448,11 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-  // Expose globally so loadVisibility can call it
+  // Expose globally
   window.buildCalendar = buildCalendar;
+
+  // Call immediately when script runs — DOM is ready since script is at bottom of body
+  document.addEventListener('DOMContentLoaded', buildCalendar);
 
 })();
 
@@ -2018,11 +2021,6 @@ async function adminSave() {
 }
 
 // Load on page ready
-// Build calendar immediately — no dependency on Supabase
-document.addEventListener('DOMContentLoaded', function(){
-  if (typeof buildCalendar === 'function') buildCalendar();
-});
-
 document.addEventListener('DOMContentLoaded', loadVisibility);
 </script>
 
