@@ -1727,6 +1727,9 @@ document.getElementById('waitlistModal').addEventListener('click',function(e){if
       <div class="admin-section-title">Camp capacity — sold out</div>
       <div id="adminSoldOutRows"></div>
 
+      <div class="admin-section-title">1:1 Sessions — sold out</div>
+      <div id="adminOTRows"></div>
+
       <div class="admin-save-bar">
         <button class="admin-save-btn" onclick="adminSave()">Save &amp; publish</button>
         <span class="admin-save-status" id="adminSaveStatus"></span>
@@ -1785,9 +1788,27 @@ const COACHES_META = [
   {id:'bianca',  label:'Bianca Hofstatter'},
 ];
 
+const OT_SESSIONS_META = [
+  {id:'rom-wed-1', label:'Romane · Wed 5 Aug', date:'7:00–8:00pm · Fairfield'},
+  {id:'rom-wed-2', label:'Romane · Wed 5 Aug', date:'8:00–9:00pm · Fairfield'},
+  {id:'rom-sat-1', label:'Romane · Sat 8 Aug', date:'6:00–7:00pm · White Oak'},
+  {id:'rom-sat-2', label:'Romane · Sat 8 Aug', date:'7:00–8:00pm · White Oak'},
+  {id:'rom-sun-1', label:'Romane · Sun 9 Aug', date:'10:30–11:30am · White Oak'},
+  {id:'rom-sun-2', label:'Romane · Sun 9 Aug', date:'11:30am–12:30pm · White Oak'},
+  {id:'ks-wed-1',  label:'Kseniya · Wed 19 Aug', date:'7:00–8:00pm · Fairfield'},
+  {id:'ks-wed-2',  label:'Kseniya · Wed 19 Aug', date:'8:00–9:00pm · Fairfield'},
+  {id:'bi-jul-1',  label:'Bianca · Fri 25 Jul', date:'6:00–7:00pm · White Oak'},
+  {id:'bi-jul-2',  label:'Bianca · Fri 25 Jul', date:'7:00–8:00pm · White Oak'},
+  {id:'bi-sat-1',  label:'Bianca · Sat 1 Aug', date:'6:00–7:00pm · White Oak'},
+  {id:'bi-sat-2',  label:'Bianca · Sat 1 Aug', date:'7:00–8:00pm · White Oak'},
+  {id:'bi-sun-1',  label:'Bianca · Sun 2 Aug', date:'10:30–11:30am · White Oak'},
+  {id:'bi-sun-2',  label:'Bianca · Sun 2 Aug', date:'11:30am–12:30pm · White Oak'},
+];
+
 let campState = {};    // id → 'live'|'soon'|'hidden'
 let coachState = {};   // id → 'live'|'soon'|'hidden'
 let soldOutState = {}; // id → true|false
+let otSoldOutState = {}; // 1:1 session id → true|false
 let visibilityLoaded = false; // true once Supabase data arrives
 
 // Default: Romane live, others hidden
@@ -1797,7 +1818,9 @@ function defaultState() {
   COACHES_META.forEach(c => cc[c.id] = c.id === 'romane' ? 'live' : 'hidden');
   const so = {};
   CAMPS_META.forEach(c => so[c.id] = false);
-  return {camps: cs, coaches: cc, soldout: so};
+  const ots = {};
+  OT_SESSIONS_META.forEach(s => ots[s.id] = false);
+  return {camps: cs, coaches: cc, soldout: so, otsoldout: ots};
 }
 
 async function loadVisibility() {
@@ -1805,11 +1828,13 @@ async function loadVisibility() {
   campState = Object.assign({}, def.camps);
   coachState = Object.assign({}, def.coaches);
   soldOutState = Object.assign({}, def.soldout);
+  otSoldOutState = Object.assign({}, def.otsoldout);
   // Fetch each independently so one failure doesn't block the rest
   await Promise.allSettled([
     sbGet('camp_visibility').then(r => { if(r && r.length) r.forEach(x => campState[x.id] = x.status); }).catch(()=>{}),
     sbGet('coach_visibility').then(r => { if(r && r.length) r.forEach(x => coachState[x.id] = x.status); }).catch(()=>{}),
     sbGet('camp_soldout').then(r => { if(r && r.length) r.forEach(x => soldOutState[x.id] = x.soldout); }).catch(()=>{}),
+    sbGet('session_bookings').then(r => { if(r && r.length) r.forEach(x => { if(otSoldOutState.hasOwnProperty(x.id)) otSoldOutState[x.id] = x.booked; }); }).catch(()=>{}),
   ]);
   // Apply visibility after data loads — calendar already built
   applyVisibility();
@@ -1912,6 +1937,31 @@ function applyVisibility() {
   if (activeCoach || activeVenue) applyFilters();
 }
 
+function applyOTVisibility() {
+  OT_SESSIONS_META.forEach(s => {
+    const card = document.querySelector(`[data-session-id="${s.id}"]`);
+    if (!card) return;
+    const isSoldOut = otSoldOutState[s.id];
+    // Remove existing sold-out div if present
+    const existing = card.querySelector('.btn-onetone-full');
+    const bookBtn = card.querySelector('.btn-onetone-book');
+    if (isSoldOut) {
+      card.classList.add('full');
+      if (bookBtn) bookBtn.style.display = 'none';
+      if (!existing) {
+        const badge = document.createElement('div');
+        badge.className = 'btn-onetone-full';
+        badge.textContent = 'Sold out';
+        card.querySelector('.onetone-footer').appendChild(badge);
+      }
+    } else {
+      card.classList.remove('full');
+      if (bookBtn) bookBtn.style.display = '';
+      if (existing) existing.remove();
+    }
+  });
+}
+
 // ── ADMIN ──
 let adminLoggedIn = false;
 // Admin fab — triple click to open
@@ -1955,6 +2005,7 @@ function showAdminControls() {
   buildAdminRows('adminCoachRows', COACHES_META, coachState);
   buildAdminRows('adminCampRows', CAMPS_META, campState);
   buildSoldOutRows('adminSoldOutRows', CAMPS_META, soldOutState);
+  buildSoldOutRows('adminOTRows', OT_SESSIONS_META, otSoldOutState);
 }
 
 function buildSoldOutRows(containerId, meta, state) {
@@ -2018,14 +2069,17 @@ async function adminSave() {
   const campRows = CAMPS_META.map(c => ({id: c.id, status: campState[c.id] || 'hidden'}));
   const coachRows = COACHES_META.map(c => ({id: c.id, status: coachState[c.id] || 'hidden'}));
   const soldOutRows = CAMPS_META.map(c => ({id: c.id, soldout: soldOutState[c.id] || false}));
+  const otRows = OT_SESSIONS_META.map(s => ({id: s.id, booked: otSoldOutState[s.id] || false}));
   const [ok1, ok2, ok3] = await Promise.all([
     sbUpsert('camp_visibility', campRows),
     sbUpsert('coach_visibility', coachRows),
-    sbUpsert('camp_soldout', soldOutRows)
+    sbUpsert('camp_soldout', soldOutRows),
+    sbUpsert('session_bookings', otRows)
   ]);
   if (ok1 && ok2 && ok3) {
     statusEl.textContent = '✓ Published';
     applyVisibility();
+    applyOTVisibility();
     setTimeout(() => statusEl.textContent = '', 3000);
   } else {
     statusEl.textContent = '✗ Error saving — check Supabase setup';
