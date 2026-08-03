@@ -1732,6 +1732,9 @@ document.getElementById('waitlistModal').addEventListener('click',function(e){if
       <div class="admin-section-title">Camp capacity — sold out</div>
       <div id="adminSoldOutRows"></div>
 
+      <div class="admin-section-title">Places remaining banner</div>
+      <div id="adminPlacesRows"></div>
+
       <div class="admin-section-title">1:1 Sessions — sold out</div>
       <div id="adminOTRows"></div>
 
@@ -1813,6 +1816,7 @@ const OT_SESSIONS_META = [
 let campState = {};    // id → 'live'|'soon'|'hidden'
 let coachState = {};   // id → 'live'|'soon'|'hidden'
 let soldOutState = {}; // id → true|false
+let placesState = {};  // id → '' or number string — "Only X places left!" banner
 let otSoldOutState = {}; // 1:1 session id → true|false
 let visibilityLoaded = false; // true once Supabase data arrives
 
@@ -1825,7 +1829,9 @@ function defaultState() {
   CAMPS_META.forEach(c => so[c.id] = false);
   const ots = {};
   OT_SESSIONS_META.forEach(s => ots[s.id] = false);
-  return {camps: cs, coaches: cc, soldout: so, otsoldout: ots};
+  const pl = {};
+  CAMPS_META.forEach(c => pl[c.id] = ['precision','elevate','control','rise'].includes(c.id) ? '5' : '');
+  return {camps: cs, coaches: cc, soldout: so, otsoldout: ots, places: pl};
 }
 
 async function loadVisibility() {
@@ -1834,12 +1840,14 @@ async function loadVisibility() {
   coachState = Object.assign({}, def.coaches);
   soldOutState = Object.assign({}, def.soldout);
   otSoldOutState = Object.assign({}, def.otsoldout);
+  placesState = Object.assign({}, def.places);
   // Fetch each independently so one failure doesn't block the rest
   await Promise.allSettled([
     sbGet('camp_visibility').then(r => { if(r && r.length) r.forEach(x => campState[x.id] = x.status); }).catch(()=>{}),
     sbGet('coach_visibility').then(r => { if(r && r.length) r.forEach(x => coachState[x.id] = x.status); }).catch(()=>{}),
     sbGet('camp_soldout').then(r => { if(r && r.length) r.forEach(x => soldOutState[x.id] = x.soldout); }).catch(()=>{}),
     sbGet('session_bookings').then(r => { if(r && r.length) r.forEach(x => { if(otSoldOutState.hasOwnProperty(x.id)) otSoldOutState[x.id] = x.booked; }); }).catch(()=>{}),
+    sbGet('camp_places').then(r => { if(r && r.length) r.forEach(x => placesState[x.id] = (x.places == null ? '' : String(x.places))); }).catch(()=>{}),
   ]);
   // Apply visibility after data loads — calendar already built
   applyVisibility();
@@ -1887,6 +1895,20 @@ function applyVisibility() {
     } else {
       const bookBtn = card.querySelector('.btn-book');
       if (bookBtn) bookBtn.style.display = '';
+    }
+    // Places remaining banner
+    let pBadge = card.querySelector('.places-badge');
+    const pNum = parseInt(placesState[c.id], 10);
+    if (!isNaN(pNum) && pNum > 0 && !soldOutState[c.id] && status !== 'soon') {
+      if (!pBadge) {
+        pBadge = document.createElement('div');
+        pBadge.className = 'places-badge';
+        const metaEl = card.querySelector('.camp-meta');
+        if (metaEl) metaEl.parentNode.insertBefore(pBadge, metaEl);
+      }
+      pBadge.textContent = '⚡ Only ' + pNum + (pNum === 1 ? ' place' : ' places') + ' left!';
+    } else if (pBadge) {
+      pBadge.remove();
     }
   });
 
@@ -2011,6 +2033,7 @@ function showAdminControls() {
   buildAdminRows('adminCampRows', CAMPS_META, campState);
   buildSoldOutRows('adminSoldOutRows', CAMPS_META, soldOutState);
   buildSoldOutRows('adminOTRows', OT_SESSIONS_META, otSoldOutState);
+  buildPlacesRows('adminPlacesRows', CAMPS_META, placesState);
 }
 
 function buildSoldOutRows(containerId, meta, state) {
@@ -2037,6 +2060,35 @@ function buildSoldOutRows(containerId, meta, state) {
     });
     row.appendChild(lbl);
     row.appendChild(btns);
+    container.appendChild(row);
+  });
+}
+
+function buildPlacesRows(containerId, meta, state) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  meta.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'admin-row';
+    const lbl = document.createElement('div');
+    lbl.innerHTML = `<div class="admin-row-label">${item.label}</div>${item.date ? `<div class="admin-row-sub">${item.date}</div>` : ''}`;
+    const wrap = document.createElement('div');
+    wrap.className = 'admin-toggle-group';
+    wrap.style.alignItems = 'center';
+    const hint = document.createElement('span');
+    hint.style.cssText = 'font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase';
+    hint.textContent = 'blank = no banner';
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.placeholder = '—';
+    input.value = state[item.id] || '';
+    input.style.cssText = "width:70px;background:#0a0018;border:1px solid #2a0060;color:#fff;font-family:'Barlow',sans-serif;font-size:14px;padding:8px 10px;border-radius:3px;outline:none;text-align:center";
+    input.oninput = () => { state[item.id] = input.value.trim(); };
+    wrap.appendChild(hint);
+    wrap.appendChild(input);
+    row.appendChild(lbl);
+    row.appendChild(wrap);
     container.appendChild(row);
   });
 }
@@ -2075,13 +2127,18 @@ async function adminSave() {
   const coachRows = COACHES_META.map(c => ({id: c.id, status: coachState[c.id] || 'hidden'}));
   const soldOutRows = CAMPS_META.map(c => ({id: c.id, soldout: soldOutState[c.id] || false}));
   const otRows = OT_SESSIONS_META.map(s => ({id: s.id, booked: otSoldOutState[s.id] || false}));
-  const [ok1, ok2, ok3] = await Promise.all([
+  const placesRows = CAMPS_META.map(c => {
+    const n = parseInt(placesState[c.id], 10);
+    return {id: c.id, places: (!isNaN(n) && n > 0) ? n : null};
+  });
+  const results = await Promise.all([
     sbUpsert('camp_visibility', campRows),
     sbUpsert('coach_visibility', coachRows),
     sbUpsert('camp_soldout', soldOutRows),
-    sbUpsert('session_bookings', otRows)
+    sbUpsert('session_bookings', otRows),
+    sbUpsert('camp_places', placesRows)
   ]);
-  if (ok1 && ok2 && ok3) {
+  if (results.every(Boolean)) {
     statusEl.textContent = '✓ Published';
     applyVisibility();
     applyOTVisibility();
