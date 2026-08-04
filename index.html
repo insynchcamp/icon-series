@@ -1514,7 +1514,7 @@ function applyFilters(){
   });
   // Show/hide coach groups
   document.querySelectorAll('.coach-group').forEach(group=>{
-    const visible=group.querySelectorAll('.camp-card:not(.hidden)').some(c=>c.style.display!=='none');
+    const visible=[...group.querySelectorAll('.camp-card:not(.hidden)')].some(c=>c.style.display!=='none');
     group.style.display=visible?'':'none';
   });
 }
@@ -1856,7 +1856,7 @@ async function loadVisibility() {
 function applyVisibility() {
   // Camps — CAMPS_META uses short ids ('precision'), cards have data-camp-id='camp-precision'
   CAMPS_META.forEach(c => {
-    const card = document.querySelector(`[data-camp-id="camp-${c.id}"]`);
+    const card = document.getElementById('camp-' + c.id);
     if (!card) return;
     const status = campState[c.id] || 'hidden';
     card.style.display = status === 'hidden' ? 'none' : '';
